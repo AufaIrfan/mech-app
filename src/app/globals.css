@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #edf1fc;
+  --foreground: #212529;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #212529;
+    --foreground: #edf1fc;
   }
 }
 
@@ -23,5 +23,8 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .main-container {
+    @apply container mx-auto max-w-[50rem] flex min-h-[95vh] flex-col gap-8 items-center justify-start p-6 lg:p-12;
   }
 }
