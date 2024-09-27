@@ -7,7 +7,6 @@ import {
   faChartSimple,
   faScissors,
   faSoap,
-  faSquare,
   faSquarePollHorizontal,
   faTable,
   faViruses,
@@ -16,7 +15,7 @@ import {
 export default function Home() {
   return (
     <main className="main-container">
-      <div className="header-content flex flex-row gap-1.5 lg:gap-2 items-center justify-center rounded-xl bg-blue min-w-full p-4 py-6 lg:p-10">
+      <div className="header-content flex flex-row gap-1.5 lg:gap-2 items-center justify-center rounded-xl bg-blue min-w-full mb-6 p-4 py-6 lg:p-10">
         <Image
           src={logo}
           alt="Next.js Logo"
@@ -37,14 +36,38 @@ export default function Home() {
       <div className="menu-content w-full">
         <h3 className="text-lg font-bold mb-3">Menu</h3>
         <div className="menu-list grid grid-cols-2 gap-4 lg:gap-6">
-          <MenuButton icon={faSoap} title="Barang Bocor" />
-          <MenuButton icon={faBoxesStacked} title="Hasil Repack" />
-          <MenuButton icon={faScissors} title="Scrapping" />
-          <MenuButton icon={faBoxOpen} title="Packaging" />
-          <MenuButton icon={faSquarePollHorizontal} title="Stock Control" />
-          <MenuButton icon={faViruses} title="Data Quality" />
-          <MenuButton icon={faTable} title="Sheets" />
-          <MenuButton icon={faChartSimple} title="Report" />
+          <MenuButton
+            icon={faSoap}
+            title="Barang Bocor"
+            to="/pages/barang-bocor"
+          />
+          <MenuButton
+            icon={faBoxesStacked}
+            title="Hasil Repack"
+            to="/pages/hasil-repack"
+          />
+          <MenuButton
+            icon={faScissors}
+            title="Scrapping"
+            to="/pages/scrapping"
+          />
+          <MenuButton
+            icon={faBoxOpen}
+            title="Packaging"
+            to="/pages/packaging"
+          />
+          <MenuButton
+            icon={faSquarePollHorizontal}
+            title="Stock Control"
+            to="/pages/stock-control"
+          />
+          <MenuButton
+            icon={faViruses}
+            title="Data Quality"
+            to="/pages/data-quality"
+          />
+          <MenuButton icon={faTable} title="Sheets" to="/pages/sheets" />
+          <MenuButton icon={faChartSimple} title="Report" to="/pages/report" />
         </div>
       </div>
     </main>

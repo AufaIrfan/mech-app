@@ -3,7 +3,7 @@ import Link from "next/link";
 const MenuButton = ({ icon, title, to, onClick }) => {
   return (
     <Link
-      href="/pages/barang-bocor"
+      href={to}
       className="group menu-item col-auto rounded-xl p-5 bg-white hover:bg-blue duration-200"
     >
       <FontAwesomeIcon

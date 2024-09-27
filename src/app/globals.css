@@ -25,6 +25,6 @@ body {
     text-wrap: balance;
   }
   .main-container {
-    @apply container mx-auto max-w-[50rem] flex min-h-[95vh] flex-col gap-8 items-center justify-start p-6 lg:p-12;
+    @apply container mx-auto max-w-[50rem] flex min-h-[95vh] flex-col items-center p-6 lg:p-12;
   }
 }
