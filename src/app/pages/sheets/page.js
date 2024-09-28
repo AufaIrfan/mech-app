@@ -1,3 +1,4 @@
+"use client";
 import HomeButton from "../../components/HomeButton";
 import { faTable } from "@fortawesome/free-solid-svg-icons";
 import SubmenuButton from "../../components/SubmenuButton";

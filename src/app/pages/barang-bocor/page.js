@@ -1,8 +1,15 @@
+"use client";
 import HomeButton from "../../components/HomeButton";
 import { faSoap } from "@fortawesome/free-solid-svg-icons";
 import SubmenuButton from "../../components/SubmenuButton";
+import { useContext, useEffect } from "react";
+import { LoadingContext } from "../../context/loadingContext";
 
 export default function Page() {
+  const { setLoading } = useContext(LoadingContext);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   return (
     <div className="main-container">
       <HomeButton />
@@ -12,6 +19,7 @@ export default function Page() {
           icon={faSoap}
           title="Input Barang Bocor"
           subtitle="Finish Good"
+          onClick={() => setLoading(true)}
         />
         <SubmenuButton
           icon={faSoap}

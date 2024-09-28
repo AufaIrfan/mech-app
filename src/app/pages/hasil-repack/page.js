@@ -1,8 +1,16 @@
+"use client";
+
 import HomeButton from "../../components/HomeButton";
 import { faBoxesStacked } from "@fortawesome/free-solid-svg-icons";
 import SubmenuButton from "../../components/SubmenuButton";
+import { useContext, useEffect } from "react";
+import { LoadingContext } from "../../context/loadingContext";
 
 export default function Page() {
+  const { setLoading } = useContext(LoadingContext);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   return (
     <div className="main-container">
       <HomeButton />

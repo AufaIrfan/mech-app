@@ -4,6 +4,7 @@ const MenuButton = ({ icon, title, to, onClick }) => {
   return (
     <Link
       href={to}
+      onClick={onClick}
       className="group menu-item col-auto rounded-xl p-5 bg-white hover:bg-blue duration-200"
     >
       <FontAwesomeIcon

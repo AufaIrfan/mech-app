@@ -2,7 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function SubmenuButton({ icon, title, subtitle, onClick }) {
   return (
-    <button className="group flex flex-row w-full gap-4 mb-4 lg:mb-6 bg-white hover:bg-blue rounded-xl p-4 items-center shadow-sm duration-200">
+    <button
+      onClick={onClick}
+      className="group flex flex-row w-full gap-4 mb-4 lg:mb-6 bg-white hover:bg-blue rounded-xl p-4 items-center shadow-sm duration-200"
+    >
       <div className="flex w-[3em] h-[3em] rounded-lg bg-slate justify-center items-center">
         <FontAwesomeIcon icon={icon} className="text-blue text-xl" />
       </div>
