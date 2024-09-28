@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
         <body className={poppins.className}>
           <Loading />
           {children}
-          <div className="container mx-auto max-w-[50rem] flex min-h-[3vh] items-center justify-start px-6 lg:px-12">
+          <div className="container mx-auto max-w-[50rem] flex min-h-[3vh] items-center justify-start px-6 pb-6 lg:px-12">
             <p className="text-xs text-dark font-semibold">Repack App</p>
           </div>
         </body>

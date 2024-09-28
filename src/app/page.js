@@ -13,7 +13,6 @@ import {
   faTable,
   faViruses,
 } from "@fortawesome/free-solid-svg-icons";
-import Loading from "./components/Loading";
 import { useContext, useEffect } from "react";
 import { LoadingContext } from "./context/loadingContext";
 
@@ -24,7 +23,7 @@ export default function Home() {
   }, []);
   return (
     <main className="main-container">
-      <div className="header-content flex flex-row gap-1.5 lg:gap-2 items-center justify-center rounded-xl bg-blue min-w-full mb-6 p-4 py-6 lg:p-10">
+      <div className="header-content flex flex-row gap-1.5 lg:gap-2 items-center justify-center rounded-3xl bg-blue min-w-full mb-6 p-4 py-6 lg:p-10">
         <Image
           src={logo}
           alt="Next.js Logo"
@@ -49,7 +48,6 @@ export default function Home() {
             icon={faSoap}
             title="Barang Bocor"
             to="/pages/barang-bocor"
-            onClick={() => setLoading(true)}
           />
           <MenuButton
             icon={faBoxesStacked}

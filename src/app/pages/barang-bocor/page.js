@@ -16,12 +16,13 @@ export default function Page() {
       <div className="text-left w-full py-4">
         <h2 className="text-2xl font-bold mb-6">Barang Bocor</h2>
         <SubmenuButton
+          to="/pages/barang-bocor/form/input-bb-fg"
           icon={faSoap}
           title="Input Barang Bocor"
           subtitle="Finish Good"
-          onClick={() => setLoading(true)}
         />
         <SubmenuButton
+          to="/pages/barang-bocor/form/input-bb-rpk"
           icon={faSoap}
           title="Input Barang Bocor"
           subtitle="Repack"
