@@ -28,7 +28,7 @@ export default function Page() {
 
   return (
     <div className="main-container">
-      <div className="py-4 mb-6 w-full flex flex-row items-center justify-between">
+      <div className="py-4 mb-4 w-full flex flex-row items-center justify-between">
         <Link href="/pages/hasil-repack">
           <FontAwesomeIcon
             icon={faArrowLeftLong}

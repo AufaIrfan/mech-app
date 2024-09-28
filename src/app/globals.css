@@ -4,7 +4,7 @@
 
 :root {
   --background: #edf1fc;
-  --foreground: #212529;
+  --foreground: #32373d;
 }
 
 @media (prefers-color-scheme: light) {
@@ -28,6 +28,6 @@ body {
     @apply container mx-auto max-w-[50rem] flex min-h-[95vh] flex-col items-center p-6 lg:p-12;
   }
   .form-input {
-    @apply w-full rounded-2xl border border-slate py-2 px-4;
+    @apply w-full rounded-2xl border outline-none border-slate py-2 px-4 bg-white border-dark/30  hover:border-blue/50 active:border-blue/50;
   }
 }

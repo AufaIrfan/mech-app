@@ -11,7 +11,7 @@ export default function SubmitButton({ title = "Submit", onClick = () => {} }) {
         setspinner(true);
         onClick();
       }}
-      className="w-full p-4 mt-2 rounded-2xl flex flex-row items-center justify-center bg-blue hover:bg-blue-hover text-white"
+      className="w-full p-3 rounded-2xl flex flex-row items-center justify-center bg-blue hover:bg-blue-hover text-white"
     >
       {spinner && (
         <FontAwesomeIcon icon={faCircleNotch} className="mr-2 animate-spin" />
