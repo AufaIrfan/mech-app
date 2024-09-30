@@ -7,13 +7,15 @@ import Link from "next/link";
 import SubmitButton from "../../../../components/SubmitButton";
 import Alert from "../../../../components/Alert";
 import FormInput from "../../../../components/FormInput";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
   const { setLoading } = useContext(LoadingContext);
   const [data, setData] = useState({
     date: new Date().toISOString().split("T")[0],
-    pallet: null,
-    checker: null,
+    pallet: "",
+    checker: "",
   });
   useEffect(() => {
     setLoading(false);
@@ -58,7 +60,10 @@ export default function Page() {
             className="form-input"
           />
         </FormInput>
-        <SubmitButton title="Submit" />
+        <SubmitButton
+          title="Submit"
+          onClick={() => router.push("/pages/barang-bocor/input/bb-fg")}
+        />
       </div>
     </div>
   );

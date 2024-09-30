@@ -1,10 +1,20 @@
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import {
+  faExclamationCircle,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function Alert({ text }) {
+export default function Alert({ text, type = "info" }) {
   return (
-    <div className="flex flex-row items-end justify-center rounded-2xl bg-blue/20 text-blue p-4">
-      <FontAwesomeIcon icon={faTriangleExclamation} className="mr-2 text-xl" />
+    <div
+      className={`flex flex-row items-end justify-center rounded-2xl p-4 ${
+        type === "danger" ? "bg-red-200 text-red-500" : "bg-blue/20 text-blue"
+      }`}
+    >
+      <FontAwesomeIcon
+        icon={type === "info" ? faExclamationCircle : faTriangleExclamation}
+        className="mr-3 text-xl"
+      />
       <p className="text-sm text-center">{text}</p>
     </div>
   );

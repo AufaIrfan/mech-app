@@ -11,12 +11,12 @@ import FormInput from "../../../../components/FormInput";
 export default function Page() {
   const { setLoading } = useContext(LoadingContext);
   const [data, setData] = useState({
-    plant: 1015,
-    hrdate: null,
-    delvdate: null,
-    pallet: null,
-    group: null,
-    checker: null,
+    plant: "1015",
+    hrdate: "",
+    delvdate: "",
+    pallet: "",
+    group: "",
+    checker: "",
   });
   useEffect(() => {
     setLoading(false);
@@ -75,10 +75,10 @@ export default function Page() {
         </FormInput>
         <FormInput label="Group">
           <select
-            className="form-input"
+            className="form-input appearance-none"
             onChange={(e) => setData({ ...data, group: e.target.value })}
           >
-            <option>Group</option>
+            <option value="">Group</option>
             <option value="N">N</option>
             <option value="A">A</option>
             <option value="B">B</option>
@@ -86,10 +86,10 @@ export default function Page() {
         </FormInput>
         <FormInput label="Checker">
           <select
-            className="form-input"
+            className="form-input appearance-none"
             onChange={(e) => setData({ ...data, checker: e.target.value })}
           >
-            <option value={null}>Checker</option>
+            <option value="">Checker</option>
             <option value="Supriyatna">Supriyatna</option>
             <option value="Adit">Adit</option>
             <option value="Ansori">Ansori</option>

@@ -16,13 +16,13 @@ export default function Page() {
       <div className="text-left w-full py-4">
         <h2 className="text-2xl font-bold mb-6">Barang Bocor</h2>
         <SubmenuButton
-          to="/pages/barang-bocor/form/input-bb-fg"
+          to="/pages/barang-bocor/form/bb-fg"
           icon={faSoap}
           title="Input Barang Bocor"
           subtitle="Finish Good"
         />
         <SubmenuButton
-          to="/pages/barang-bocor/form/input-bb-rpk"
+          to="/pages/barang-bocor/form/bb-rpk"
           icon={faSoap}
           title="Input Barang Bocor"
           subtitle="Repack"
