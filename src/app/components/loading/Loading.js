@@ -1,11 +1,11 @@
 "use client";
 import { faCircleNotch, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { LoadingContext } from "../context/loadingContext";
 import { useContext } from "react";
+import { GlobalContext } from "../../context/GlobalContext";
 
 export default function Loading({ text = "Loading" }) {
-  const { loading } = useContext(LoadingContext);
+  const { loading } = useContext(GlobalContext);
   if (loading) {
     return (
       <div className=" fixed top-0 left-0 bg-black/20 w-full h-full flex items-center justify-center">

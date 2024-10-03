@@ -3,9 +3,9 @@
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { ContentTable } from "./ContentTable";
+import { TableContent } from "../table/TableContent";
 
-export default function PlantInputCard({ plant }) {
+export default function CardInputCanvas({ plant }) {
   const [onInput, setOnInput] = useState(false);
   return (
     <div className="">
@@ -22,7 +22,7 @@ export default function PlantInputCard({ plant }) {
       </button>
       {onInput && (
         <div className="flex flex-col gap-3 p-4 rounded-b-2xl bg-white border border-blue/60  duration-200">
-          <ContentTable />
+          <TableContent />
           <div className="botton-action flex flex-row justify-center w-fit gap-2 mx-auto">
             <button className="w-full lg:w-fit mx-auto flex flex-row items-middle gap-2 p-3 px-5 rounded-xl border border-white hover:border-red-400 text-red-500 text-sm duration-200">
               <FontAwesomeIcon icon={faTrash} className="" />

@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { LoadingContext } from "./context/loadingContext";
+import { GlobalContext } from "./context/GlobalContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 export default function NotFound() {
-  const { setLoading } = useContext(LoadingContext);
+  const { setLoading } = useContext(GlobalContext);
   const [spinner, setSpinner] = useState(false);
   useEffect(() => {
     setLoading(false);

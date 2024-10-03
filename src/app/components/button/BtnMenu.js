@@ -2,9 +2,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useContext } from "react";
-import { LoadingContext } from "../context/loadingContext";
-const MenuButton = ({ icon, title, to, onClick = () => {} }) => {
-  const { setLoading } = useContext(LoadingContext);
+import { GlobalContext } from "../../context/GlobalContext";
+const BtnMenu = ({ icon, title, to, onClick = () => {} }) => {
+  const { setLoading } = useContext(GlobalContext);
   return (
     <Link
       href={to}
@@ -23,4 +23,4 @@ const MenuButton = ({ icon, title, to, onClick = () => {} }) => {
   );
 };
 
-export default MenuButton;
+export default BtnMenu;

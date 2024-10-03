@@ -1,5 +1,5 @@
 import "./globals.css";
-import { LoadingProvider } from "./context/loadingContext";
+import { GlobalProvider } from "./context/GlobalContext";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -8,7 +8,7 @@ config.autoAddCss = false;
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import { Poppins } from "next/font/google";
-import Loading from "./components/Loading";
+import Loading from "./components/loading/Loading";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -25,16 +25,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <LoadingProvider>
+    <GlobalProvider>
       <html lang="en">
         <body className={poppins.className}>
           <Loading />
           {children}
-          <div className="container mx-auto max-w-[50rem] flex min-h-[5vh] items-center justify-start px-6 lg:px-12">
-            <p className="text-xs text-dark font-semibold">Repack App</p>
-          </div>
         </body>
       </html>
-    </LoadingProvider>
+    </GlobalProvider>
   );
 }

@@ -3,7 +3,7 @@ import { faCheck, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-export default function SubmitButton({
+export default function BtnSubmit({
   title = "Submit",
   type = "blue",
   style,
@@ -13,20 +13,22 @@ export default function SubmitButton({
   let typeStyle = "";
   switch (type) {
     case "blue":
-      typeStyle =
-        "bg-blue hover:bg-blue-hover text-white disabled:bg-blue/80 p-3";
+      typeStyle = "bg-blue hover:bg-blue-hover text-white disabled:bg-blue/80";
       break;
     case "blue-outline":
       typeStyle =
-        "border border-blue/70 text-blue hover:border-blue disabled:border-blue/50 disabled:text-blue/70 p-2.5";
+        "border border-blue/70 text-blue hover:border-blue disabled:border-blue/50 disabled:text-blue/70";
       break;
     case "red":
-      typeStyle =
-        "bg-red-500 hover:bg-red-600 text-white disabled:bg-red-400 p-3";
+      typeStyle = "bg-red-500 hover:bg-red-600 text-white disabled:bg-red-400";
       break;
     case "red-outline":
       typeStyle =
-        "border border-red-400 text-red-500 hover:border-red-600 disabled:border-red-300 disabled:text-red-400 p-2.5";
+        "border border-red-400 text-red-500 hover:border-red-600 disabled:border-red-300 disabled:text-red-400";
+      break;
+    case "gray-outline":
+      typeStyle =
+        "border border-gray-400 text-gray-500 hover:border-gray-600 hover:text-gray-600 disabled:border-gray-300 disabled:text-gray-400";
       break;
 
     default:
@@ -37,8 +39,9 @@ export default function SubmitButton({
       onClick={() => {
         setspinner(true);
         onClick();
+        setspinner(false);
       }}
-      className={`w-full rounded-2xl flex flex-row items-center justify-center  ${typeStyle}`}
+      className={`w-full rounded-2xl flex flex-row items-center justify-center  p-3 ${typeStyle}`}
       {...(spinner && { disabled: true })}
     >
       {spinner && (

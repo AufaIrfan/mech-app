@@ -1,7 +1,7 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function DetailInputCard() {
+export default function CardDetails() {
   return (
     <div className="w-full p-6 rounded-3xl bg-blue/20 text-blue text-sm">
       <div className="flex flex-row gap-2 items-center mb-2">

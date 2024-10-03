@@ -2,7 +2,7 @@
 
 import { Table } from "flowbite-react";
 
-export function ContentTable() {
+export function TableContent() {
   return (
     <div className="overflow-x-auto">
       <Table striped>

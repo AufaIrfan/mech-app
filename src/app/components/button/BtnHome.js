@@ -3,10 +3,10 @@ import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useContext } from "react";
-import { LoadingContext } from "../context/loadingContext";
+import { GlobalContext } from "../../context/GlobalContext";
 
-export default function HomeButton() {
-  const { setLoading } = useContext(LoadingContext);
+export default function BtnHome() {
+  const { setLoading } = useContext(GlobalContext);
   return (
     <Link
       href="/"

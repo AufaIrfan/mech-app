@@ -1,22 +1,15 @@
 "use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import { useContext } from "react";
-import { LoadingContext } from "../context/loadingContext";
 
-export default function SubmenuButton({
-  to = "/404",
+export default function BtnSubmenu({
   icon,
   title,
   subtitle,
   onClick = () => {},
 }) {
-  const { setLoading } = useContext(LoadingContext);
   return (
-    <Link
-      href={to}
+    <button
       onClick={() => {
-        setLoading(true);
         onClick();
       }}
       className="group flex flex-row w-full gap-4 mb-4 lg:mb-6 bg-white hover:bg-blue rounded-3xl p-4 items-center shadow-sm duration-200"
@@ -32,6 +25,6 @@ export default function SubmenuButton({
           </p>
         )}
       </div>
-    </Link>
+    </button>
   );
 }
