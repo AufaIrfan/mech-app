@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export default function BtnSubmit({
   title = "Submit",
+  icon = "",
   type = "blue",
   style,
   onClick = () => {},
@@ -39,13 +40,14 @@ export default function BtnSubmit({
       onClick={() => {
         setspinner(true);
         onClick();
-        setspinner(false);
       }}
-      className={`w-full rounded-2xl flex flex-row items-center justify-center  p-3 ${typeStyle}`}
+      className={`rounded-2xl flex flex-row items-center justify-center  p-3 ${typeStyle} ${style}`}
       {...(spinner && { disabled: true })}
     >
-      {spinner && (
+      {spinner ? (
         <FontAwesomeIcon icon={faCircleNotch} className="mr-2 animate-spin" />
+      ) : (
+        <FontAwesomeIcon icon={icon} className="mr-2" />
       )}
       <p className="text-center">{title}</p>
     </button>

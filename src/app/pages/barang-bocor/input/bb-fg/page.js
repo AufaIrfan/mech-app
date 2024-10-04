@@ -4,7 +4,11 @@ import { GlobalContext } from "../../../../context/GlobalContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import ModalConfirm from "../../../../components/modal/ModalConfirm";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faA,
+  faArrowLeftLong,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 import CardDetails from "../../../../components/card/CardDetails";
 import Alert from "../../../../components/alert/Alert";
 import CardInputCanvas from "../../../../components/card/CardPlantCanvas";
@@ -30,20 +34,23 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="main-container gap-4 bg-white justify-between">
+    <div className="main-container bg-white">
       <ModalConfirm
         color={confirmModalData.color}
         title={confirmModalData.title}
         yesLabel={confirmModalData.yesLabel}
         yesAction={confirmModalData.yesAction}
       />
-      <div className="w-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-4  pb-[6rem]">
         <div className="pt-4 mb-3 gap-2 w-full flex flex-row items-center justify-between">
           <h3 className=" font-bold flex-grow">Input Barang Bocor</h3>
           <button
             className="flex items-middle gap-2"
             onClick={() => setDetails(!details)}
           >
+            <p className="text-sm px-3 py-1 bg-blue rounded-xl text-white">
+              FG
+            </p>
             <p className="text-sm px-3 py-1 bg-blue rounded-xl text-white">
               27/09/2024
             </p>
@@ -66,14 +73,17 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="w-full flex flex-row gap-4 mt-2">
+      <div className="fixed w-full flex flex-row gap-4 mt-2 bottom-0 bg-white container mx-auto lg:max-w-[50vw] p-6 lg:p-12">
         <BtnSubmit
-          title="Batal"
-          type="red-outline"
+          title=""
+          icon={faArrowLeftLong}
+          type="gray-outline"
+          style="pl-5 lg:px-16"
           onClick={() => router.push("/pages/barang-bocor")}
         />
         <BtnSubmit
           title="Simpan"
+          style="flex-1"
           // onClick={() => {
           //   setConfirmModalData({
           //     color: "blue",
