@@ -42,8 +42,14 @@ body {
   .btn-submit-red {
     @apply bg-red-500 hover:bg-red-600 text-white disabled:bg-red-400;
   }
+  .btn-submit-gray {
+    @apply bg-gray-500 hover:bg-gray-600 text-white disabled:bg-gray-400;
+  }
+  .btn-submit-blue-light {
+    @apply bg-blue/50 hover:bg-blue text-blue hover:text-white disabled:bg-blue/80;
+  }
   .btn-submit-blue-outline {
-    @apply border border-blue/70 text-blue hover:border-blue disabled:border-blue/50 disabled:text-blue/70;
+    @apply border border-blue/70 text-blue hover:border-blue disabled:border-gray-400 disabled:text-gray-400;
   }
   .btn-submit-red-outline {
     @apply border border-red-400 text-red-500 hover:border-red-600 disabled:border-red-300 disabled:text-red-400;
