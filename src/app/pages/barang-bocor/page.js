@@ -11,12 +11,12 @@ import BtnSubmit from "../../components/button/BtnSubmit";
 import ModalForm from "../../components/modal/ModalForm";
 import { useRouter } from "next/router";
 
-function ModalBarbocFg({ isOpen }) {
+function ModalBarbocFg({ closeModal }) {
   return (
     <ModalForm
       title="Input Barang Bocor"
       to="/pages/barang-bocor/input/bb-fg"
-      isOpen={isOpen}
+      closeAct={closeModal}
     >
       <Alert text="Diisi oleh checker finish good" style="mb-2" />
       <FormInput label="Tanggal">
@@ -46,12 +46,12 @@ function ModalBarbocFg({ isOpen }) {
     </ModalForm>
   );
 }
-function ModalBarbocRpk({ isOpen }) {
+function ModalBarbocRpk({ closeModal }) {
   return (
     <ModalForm
       title="Input Barang Bocor"
       to="/pages/barang-bocor/input/bb-fg"
-      isOpen={isOpen}
+      closeAct={closeModal}
     >
       <Alert text="Diisi oleh checker repack" style="mb-2" />
       <FormInput label="Tanggal">
@@ -86,14 +86,18 @@ export default function Page() {
   const [modalFg, setModalFg] = useState(false);
   const [modalRpk, setModalRpk] = useState(false);
   const { setLoading } = useContext(GlobalContext);
+  const closeModal = () => {
+    setModalFg(false);
+    setModalRpk(false);
+  };
   useEffect(() => {
     setLoading(false);
   }, []);
   return (
     <div className="main-container">
       <BtnHome />
-      {modalFg && <ModalBarbocFg isOpen={setModalFg} />}
-      {modalRpk && <ModalBarbocRpk isOpen={setModalRpk} />}
+      {modalFg && <ModalBarbocFg closeModal={closeModal} />}
+      {modalRpk && <ModalBarbocRpk closeModal={closeModal} />}
       <div className="text-left w-full py-4">
         <h2 className="text-xl font-bold mb-6">Barang Bocor</h2>
         <BtnSubmenu

@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import ModalConfirm from "../../../../components/modal/ModalConfirm";
 import {
-  faA,
   faArrowLeftLong,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
@@ -18,29 +17,47 @@ export default function Page() {
   const router = useRouter();
   const { setLoading } = useContext(GlobalContext);
   const [details, setDetails] = useState(false);
-  const [confirmModalData, setConfirmModalData] = useState({
-    color: "",
-    title: "",
-    yesLabel: "",
-    yesAction: () => {},
-  });
-  const [data, setData] = useState({
-    date: new Date().toISOString().split("T")[0],
-    pallet: null,
-    checker: null,
-  });
+  const [simpanConfirm, setSimpanConfirm] = useState(false);
+  const [batalConfirm, setBatalConfirm] = useState(false);
+  const [del1015Confirm, setDel1015Confirm] = useState(false);
+  const [del1016Confirm, setDel1016Confirm] = useState(false);
   useEffect(() => {
     setLoading(false);
   }, []);
 
+  const closeModal = () => {
+    setSimpanConfirm(false);
+    setBatalConfirm(false);
+    setDel1015Confirm(false);
+    setDel1016Confirm(false);
+  };
+
   return (
     <div className="main-container bg-white">
-      <ModalConfirm
-        color={confirmModalData.color}
-        title={confirmModalData.title}
-        yesLabel={confirmModalData.yesLabel}
-        yesAction={confirmModalData.yesAction}
-      />
+      {simpanConfirm && (
+        <ModalConfirm
+          title="Simpan Data ?"
+          yeslabel="Simpan"
+          color="blue"
+          yesAction={() => {}}
+          noAction={() => {
+            closeModal();
+          }}
+        />
+      )}
+      {batalConfirm && (
+        <ModalConfirm
+          title="Data akan dihapus, tetap keluar?"
+          yeslabel="Keluar"
+          color="red"
+          yesAction={() => {
+            router.push("/pages/barang-bocor");
+          }}
+          noAction={() => {
+            closeModal();
+          }}
+        />
+      )}
       <div className="w-full flex flex-col gap-4  pb-[6rem]">
         <div className="pt-4 mb-3 gap-2 w-full flex flex-row items-center justify-between">
           <h3 className=" font-bold flex-grow">Input Barang Bocor</h3>
@@ -48,9 +65,6 @@ export default function Page() {
             className="flex items-middle gap-2"
             onClick={() => setDetails(!details)}
           >
-            <p className="text-sm px-3 py-1 bg-blue rounded-xl text-white">
-              FG
-            </p>
             <p className="text-sm px-3 py-1 bg-blue rounded-xl text-white">
               27/09/2024
             </p>
@@ -70,28 +84,27 @@ export default function Page() {
 
             <CardInputCanvas plant="1015" />
             <CardInputCanvas plant="1016" />
+            <CardInputCanvas plant="Retur" />
           </div>
         </div>
       </div>
-      <div className="fixed w-full flex flex-row gap-4 mt-2 bottom-0 bg-white container mx-auto lg:max-w-[50vw] p-6 lg:p-12">
+      <div className="fixed w-full flex flex-row gap-4 mt-2 bottom-0 bg-white container mx-auto lg:max-w-[50vw] p-6 lg:px-12 ">
         <BtnSubmit
           title=""
+          spinAct={false}
           icon={faArrowLeftLong}
-          type="gray-outline"
-          style="pl-5 lg:px-16"
-          onClick={() => router.push("/pages/barang-bocor")}
+          style="px-5 lg:px-16 btn-submit-gray-outline"
+          onClick={() => {
+            setBatalConfirm(true);
+          }}
         />
         <BtnSubmit
           title="Simpan"
-          style="flex-1"
-          // onClick={() => {
-          //   setConfirmModalData({
-          //     color: "blue",
-          //     title: "Simpan data ini?",
-          //     yesLabel: "Simpan",
-          //   });
-          //   setOpenConfirmModal(true);
-          // }}
+          spinAct={false}
+          style="grow btn-submit-blue"
+          onClick={() => {
+            setSimpanConfirm(true);
+          }}
         />
       </div>
     </div>

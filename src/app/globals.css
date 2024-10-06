@@ -33,4 +33,22 @@ body {
   .items-middle {
     @apply justify-center items-center;
   }
+  .btn-submit {
+    @apply rounded-2xl flex flex-row items-center justify-center  py-3;
+  }
+  .btn-submit-blue {
+    @apply bg-blue hover:bg-blue-hover text-white disabled:bg-blue/80;
+  }
+  .btn-submit-red {
+    @apply bg-red-500 hover:bg-red-600 text-white disabled:bg-red-400;
+  }
+  .btn-submit-blue-outline {
+    @apply border border-blue/70 text-blue hover:border-blue disabled:border-blue/50 disabled:text-blue/70;
+  }
+  .btn-submit-red-outline {
+    @apply border border-red-400 text-red-500 hover:border-red-600 disabled:border-red-300 disabled:text-red-400;
+  }
+  .btn-submit-gray-outline {
+    @apply border border-gray-400 text-gray-500 hover:border-gray-600 hover:text-gray-600 disabled:border-gray-300 disabled:text-gray-400;
+  }
 }
