@@ -1,31 +1,14 @@
 "use client";
 import { faCheck, faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useContext } from "react";
+import { GlobalContext } from "../../context/GlobalContext";
 
-export default function BtnSubmit({
-  title = "Submit",
-  spinAct = true,
-  icon = "",
-  style,
-  onClick = () => {},
-}) {
-  const [spinner, setSpinner] = useState(false);
+export default function BtnSubmit({ title, icon, style, onClick = () => {} }) {
   return (
-    <button
-      onClick={() => {
-        spinAct && setSpinner(true);
-        onClick();
-      }}
-      className={`btn-submit ${style}`}
-      {...(spinner && { disabled: true })}
-    >
-      {spinner ? (
-        <FontAwesomeIcon icon={faCircleNotch} className="animate-spin" />
-      ) : (
-        icon && <FontAwesomeIcon icon={icon} />
-      )}
-      {title != "" && <p className="text-center mx-2">{title}</p>}
+    <button onClick={() => onClick()} className={`btn-submit ${style}`}>
+      {icon && <FontAwesomeIcon icon={icon} />}
+      {title && <p className="text-center">{title}</p>}
     </button>
   );
 }

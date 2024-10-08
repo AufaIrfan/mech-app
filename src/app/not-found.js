@@ -6,11 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 export default function NotFound() {
-  const { setLoading } = useContext(GlobalContext);
   const [spinner, setSpinner] = useState(false);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  const { setGlobalFalse } = useContext(GlobalContext);
+  useEffect(() => setGlobalFalse(), []);
   return (
     <div className="main-container justify-center gap-3">
       <h2 className="text-2xl font-bold">Not Found</h2>

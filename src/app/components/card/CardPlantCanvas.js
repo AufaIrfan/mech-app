@@ -1,20 +1,19 @@
 "use client";
 
-import {
-  faMinus,
-  faPlus,
-  faPlusCircle,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { TableContent } from "../table/TableContent";
 import ModalConfirm from "../modal/ModalConfirm";
 import ModalForm from "../modal/ModalForm";
 import FormInput from "../form/FormInput";
-import Alert from "../alert/Alert";
+import CountInput from "../form/CountInput";
+import CheckboxInput from "../form/CheckboxInput";
+import MidInput from "../form/MidInput";
+import { GlobalContext } from "../../context/GlobalContext";
 
 export default function CardInputCanvas({ plant }) {
+  const { setGlobalFalse } = useContext(GlobalContext);
   const [onInput, setOnInput] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [modalInput, setModalInput] = useState(false);
@@ -29,9 +28,11 @@ export default function CardInputCanvas({ plant }) {
           yesAction={() => {
             setOnInput(false);
             setDeleteData(false);
+            setGlobalFalse();
           }}
           noAction={() => {
             setDeleteData(false);
+            setGlobalFalse();
           }}
         />
       )}
@@ -39,48 +40,27 @@ export default function CardInputCanvas({ plant }) {
       {modalInput && (
         <ModalForm
           title={plant == "Retur" ? "Input Retur" : "Input Plant " + plant}
-          closeAct={() => setModalInput(false)}
+          closeAct={() => {
+            setModalInput(false);
+            setQty(0);
+          }}
         >
-          <Alert
-            text="Data tidak tersedia? Hubungi admin"
-            style="mb-2"
-            icon={false}
-          />
-
           <FormInput label="MID">
-            <input type="number" className="form-input" />
+            <MidInput />
           </FormInput>
-          <FormInput label="Description">
+          <FormInput label="Deskripsi">
+            <input type="text" className="form-input" />
+          </FormInput>
+          <FormInput label="Jenis Kerusakan">
             <input type="text" className="form-input" />
           </FormInput>
           <FormInput label="Qty">
-            <div className="grid grid-cols-4 gap-4">
-              <button
-                onClick={() => setQty(qty - 1)}
-                className="font-bold btn-submit btn-submit-blue-outline"
-                {...(qty == 0 && { disabled: true })}
-              >
-                <FontAwesomeIcon icon={faMinus} />
-              </button>
-
-              <input
-                type="number"
-                className="form-input text-center col-span-2"
-                value={qty}
-                onChange={(e) => setQty(Number(e.target.value))}
-              />
-              <button
-                onClick={() => setQty(qty + 1)}
-                className="font-bold btn-submit btn-submit-blue-outline"
-              >
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-            </div>
+            <CountInput qty={qty} setQty={setQty} />
           </FormInput>
           <FormInput label="Note">
             <textarea rows={2} className="form-input" />
           </FormInput>
-          <input type="radio" className="" />
+          <CheckboxInput label="MID Baru" value="mid baru" />
         </ModalForm>
       )}
 

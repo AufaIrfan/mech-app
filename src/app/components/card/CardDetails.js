@@ -1,7 +1,7 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function CardDetails() {
+export default function CardDetails({ data }) {
   return (
     <div className="w-full p-6 rounded-3xl bg-blue/20 text-blue text-sm">
       <div className="flex flex-row gap-2 items-center mb-2">
@@ -14,19 +14,21 @@ export default function CardDetails() {
           <tbody>
             <tr className="">
               <td className="pt-1.5">Tanggal</td>
-              <td className="pt-1.5 ps-4">27/09/2024</td>
+              <td className="pt-1.5 ps-4">
+                {new Date(data.date).toLocaleDateString()}
+              </td>
             </tr>
             <tr className="">
               <td className="pt-1.5">Pallet</td>
-              <td className="pt-1.5 ps-4">2</td>
+              <td className="pt-1.5 ps-4">{data.pallet}</td>
             </tr>
             <tr className="">
               <td className="pt-1.5 ">Checker</td>
-              <td className="pt-1.5 ps-4">Hasan</td>
+              <td className="pt-1.5 ps-4">{data.checker}</td>
             </tr>
             <tr className="">
               <td className="pt-1.5 ">Mulai hitung</td>
-              <td className="pt-1.5 ps-4">12.30</td>
+              <td className="pt-1.5 ps-4">{data.time}</td>
             </tr>
           </tbody>
         </table>

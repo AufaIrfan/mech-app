@@ -9,9 +9,7 @@ export default function BtnSubmenu({
 }) {
   return (
     <button
-      onClick={() => {
-        onClick();
-      }}
+      onClick={() => onClick()}
       className="group flex flex-row w-full gap-4 mb-4 lg:mb-6 bg-white hover:bg-blue rounded-3xl p-4 items-center shadow-sm duration-200"
     >
       <div className="flex w-[3em] h-[3em] rounded-2xl bg-slate justify-center items-center">

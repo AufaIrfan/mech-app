@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 
-export default function Loading({ text = "Loading" }) {
-  const { loading } = useContext(GlobalContext);
-  if (loading) {
+export default function Load({ text = "loading" }) {
+  const { load } = useContext(GlobalContext);
+  if (load) {
     return (
-      <div className=" fixed top-0 left-0 bg-black/20 w-full h-full flex items-center justify-center">
+      <div className=" fixed top-0 left-0 bg-black/20 w-full h-full flex items-center justify-center z-20">
         <div className="flex flex-row items-center justify-center p-4 px-6 bg-white rounded-xl">
           <FontAwesomeIcon
             icon={faCircleNotch}

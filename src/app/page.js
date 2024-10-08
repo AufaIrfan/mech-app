@@ -8,6 +8,7 @@ import {
   faSoap,
   faSquarePollHorizontal,
   faTable,
+  faToolbox,
   faViruses,
 } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect } from "react";
@@ -16,10 +17,8 @@ import BtnMenu from "./components/button/BtnMenu";
 import CardHome from "./components/card/CardHome";
 
 export default function Home() {
-  const { setLoading } = useContext(GlobalContext);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  const { setGlobalFalse } = useContext(GlobalContext);
+  useEffect(() => setGlobalFalse(), []);
   return (
     <main className="main-container">
       <CardHome />
@@ -50,6 +49,12 @@ export default function Home() {
           />
           <BtnMenu icon={faTable} title="Sheets" to="/pages/sheets" />
           <BtnMenu icon={faChartSimple} title="Report" to="/pages/report" />
+          <BtnMenu
+            icon={faToolbox}
+            title="Maintenance"
+            to="/pages/packaging"
+            notif={5}
+          />
         </div>
       </div>
     </main>

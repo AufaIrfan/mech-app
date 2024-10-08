@@ -15,15 +15,20 @@ import BtnSubmit from "../../../../components/button/BtnSubmit";
 
 export default function Page() {
   const router = useRouter();
-  const { setLoading } = useContext(GlobalContext);
+  const { setGlobalFalse, setLoad, dataBBFg } = useContext(GlobalContext);
+  useEffect(() => {
+    setLoad(true);
+    if (Object.keys(dataBBFg.data1).length == 0) {
+      router.push("/pages/barang-bocor");
+    } else {
+      setGlobalFalse();
+    }
+  }, []);
   const [details, setDetails] = useState(false);
   const [simpanConfirm, setSimpanConfirm] = useState(false);
   const [batalConfirm, setBatalConfirm] = useState(false);
   const [del1015Confirm, setDel1015Confirm] = useState(false);
   const [del1016Confirm, setDel1016Confirm] = useState(false);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   const closeModal = () => {
     setSimpanConfirm(false);
@@ -66,10 +71,10 @@ export default function Page() {
             onClick={() => setDetails(!details)}
           >
             <p className="text-sm px-3 py-1 bg-blue rounded-xl text-white">
-              27/09/2024
+              {new Date(dataBBFg.data1.date).toLocaleDateString()}
             </p>
             <p className="text-sm px-3 py-1 mr-2 bg-blue rounded-xl text-white">
-              2
+              {dataBBFg.data1.pallet}
             </p>
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -77,14 +82,13 @@ export default function Page() {
             />
           </button>
         </div>
-        {details && <CardDetails />}
+        {details && <CardDetails data={dataBBFg.data1} />}
         <div className="w-full  flex flex-col gap-4 justify-between">
           <div className="flex flex-col gap-4">
             <Alert text={"Diisi oleh checker finish good"} style={"mb-2"} />
 
             <CardInputCanvas plant="1015" />
             <CardInputCanvas plant="1016" />
-            <CardInputCanvas plant="Retur" />
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ config.autoAddCss = false;
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import { Poppins } from "next/font/google";
-import Loading from "./components/loading/Loading";
+import Load from "./components/load/Load";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
     <GlobalProvider>
       <html lang="en">
         <body className={poppins.className}>
-          <Loading />
+          <Load />
           {children}
         </body>
       </html>
