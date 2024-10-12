@@ -1,5 +1,7 @@
+"use client";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import formatDate from "../../hooks/fortmatDate";
 
 export default function CardDetails({ data }) {
   return (
@@ -14,9 +16,7 @@ export default function CardDetails({ data }) {
           <tbody>
             <tr className="">
               <td className="pt-1.5">Tanggal</td>
-              <td className="pt-1.5 ps-4">
-                {new Date(data.date).toLocaleDateString()}
-              </td>
+              <td className="pt-1.5 ps-4">{formatDate(new Date(data.date))}</td>
             </tr>
             <tr className="">
               <td className="pt-1.5">Pallet</td>
@@ -28,7 +28,7 @@ export default function CardDetails({ data }) {
             </tr>
             <tr className="">
               <td className="pt-1.5 ">Mulai hitung</td>
-              <td className="pt-1.5 ps-4">{data.time}</td>
+              <td className="pt-1.5 ps-4">{data.time + " WIB"}</td>
             </tr>
           </tbody>
         </table>

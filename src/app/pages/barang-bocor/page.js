@@ -7,23 +7,30 @@ import BtnHome from "../../components/button/BtnHome";
 import BtnSubmenu from "../../components/button/BtnSubmenu";
 import Alert from "../../components/alert/Alert";
 import FormInput from "../../components/form/FormInput";
-import BtnSubmit from "../../components/button/BtnSubmit";
 import ModalForm from "../../components/modal/ModalForm";
 import { useRouter } from "next/navigation";
 import CountInput from "../../components/form/CountInput";
+import capitalize from "../../hooks/capitalize";
+import setLocalstorage from "../../hooks/setLocalstorage";
+import { getCheckerRpk, useFetchBarboc } from "../../Api/ApiBarangBocor";
+import Spinner from "../../components/load/Spinner";
 
-function ModalBarbocFg({ closeModal }) {
+function ModalBarbocFg({ closeModal, dataApi }) {
   const router = useRouter();
   const { setLoad, dataBBFg, setDataBBFg } = useContext(GlobalContext);
-  const [pallet, setPallet] = useState(0);
   const [readySubmit, setReadySubmit] = useState(true);
+  const [pallet, setPallet] = useState(0);
   const [data, setData] = useState({
     date: new Date().toISOString().split("T")[0],
-    pallet: pallet,
+    pallet: "",
     checker: "",
-    time: new Date().toLocaleTimeString(),
+    time: new Date().getHours() + ":" + new Date().getMinutes(),
   });
-  useEffect(() => setData({ ...data, pallet: pallet }), [pallet]);
+
+  useEffect(() => {
+    setData({ ...data, pallet: pallet });
+  }, [pallet]);
+
   return (
     <ModalForm
       title="Barang Bocor Finish Good"
@@ -31,6 +38,7 @@ function ModalBarbocFg({ closeModal }) {
         if (data.date && data.pallet && data.checker) {
           setLoad(true);
           setDataBBFg({ ...dataBBFg, data1: data });
+          setLocalstorage("dataBBFg", { ...dataBBFg, data1: data });
           router.push("/pages/barang-bocor/input/bb-fg");
         } else {
           setReadySubmit(false);
@@ -56,7 +64,9 @@ function ModalBarbocFg({ closeModal }) {
         <textarea
           rows={2}
           value={data.checker}
-          onChange={(e) => setData({ ...data, checker: e.target.value })}
+          onChange={(e) =>
+            setData({ ...data, checker: capitalize(e.target.value) })
+          }
           className={
             !readySubmit && !data.checker ? "form-input-false" : "form-input"
           }
@@ -66,32 +76,79 @@ function ModalBarbocFg({ closeModal }) {
   );
 }
 function ModalBarbocRpk({ closeModal }) {
+  const router = useRouter();
+  const { setLoad, dataBBRpk, setDataBBRpk } = useContext(GlobalContext);
+  const [readySubmit, setReadySubmit] = useState(true);
   const [pallet, setPallet] = useState(0);
+  const [data, setData] = useState({
+    date: new Date().toISOString().split("T")[0],
+    pallet: "",
+    checker: "",
+    time: new Date().getHours() + ":" + new Date().getMinutes(),
+  });
+
+  useEffect(() => {
+    setData({ ...data, pallet: pallet });
+  }, [pallet]);
+
+  // fecth api
+  const [apiData, setApiData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await useFetchBarboc("getCheckerRpk");
+      setApiData({
+        ...apiData,
+        checkerRpk: res,
+      });
+    };
+    fetchData();
+  }, []);
+
   return (
     <ModalForm
       title="Barang Bocor Repack"
-      to="/pages/barang-bocor/input/bb-fg"
+      submitAct={() => {
+        if (data.date && data.pallet && data.checker) {
+          setLoad(true);
+          setDataBBRpk({ ...dataBBRpk, data1: data });
+          setLocalstorage("dataBBRpk", { ...dataBBRpk, data1: data });
+          router.push("/pages/barang-bocor/input/bb-rpk");
+        } else {
+          setReadySubmit(false);
+        }
+      }}
       closeAct={closeModal}
     >
-      <Alert text="Diisi oleh checker repack" style="mb-2" />
+      <Alert text="Diisi oleh checker Repack" style="mb-2" />
       <FormInput label="Tanggal">
         <input
           type="date"
-          // value={data.date}
-          onChange={(e) => {}}
-          className="form-input"
+          value={data.date}
+          onChange={(e) => setData({ ...data, date: e.target.value })}
+          className={
+            !readySubmit && !data.date ? "form-input-false" : "form-input"
+          }
         />
       </FormInput>
       <FormInput label="Pallet">
-        <CountInput qty={pallet} setQty={setPallet} />
+        <CountInput qty={pallet} setQty={setPallet} cek={readySubmit} />
       </FormInput>
       <FormInput label="Checker">
-        <textarea
-          rows={2}
-          // value={data.checker}
-          onChange={(e) => {}}
-          className="form-input"
-        />
+        <select
+          className={
+            !readySubmit && !data.checker ? "form-input-false" : "form-input"
+          }
+          onChange={(e) => setData({ ...data, checker: e.target.value })}
+        >
+          <option value="">Pilih Checker</option>
+          {!apiData.checkerRpk && <option>Loading...</option>}
+          {apiData.checkerRpk &&
+            apiData.checkerRpk.map((checker, i) => (
+              <option key={i} value={checker}>
+                {checker}
+              </option>
+            ))}
+        </select>
       </FormInput>
     </ModalForm>
   );
@@ -106,6 +163,7 @@ export default function Page() {
     setModalFg(false);
     setModalRpk(false);
   };
+
   return (
     <div className="main-container">
       <BtnHome />

@@ -17,7 +17,7 @@ import removeLocalstorage from "../../../../hooks/removeLocalstorage";
 
 export default function Page() {
   const router = useRouter();
-  const { setGlobalFalse, setLoad, dataBBFg } = useContext(GlobalContext);
+  const { setGlobalFalse, setLoad, dataBBRpk } = useContext(GlobalContext);
   const [details, setDetails] = useState(false);
   const [simpanConfirm, setSimpanConfirm] = useState(false);
   const [batalConfirm, setBatalConfirm] = useState(false);
@@ -32,17 +32,17 @@ export default function Page() {
 
   useEffect(() => {
     if (
-      Object.keys(dataBBFg).length == 0 ||
-      Object.keys(dataBBFg.data1).length == 0
+      Object.keys(dataBBRpk).length == 0 ||
+      Object.keys(dataBBRpk.data1).length == 0
     ) {
       router.push("/pages/barang-bocor");
     } else {
       setGlobalFalse();
       setDataDisplay({
-        date: dataBBFg.data1.date,
-        pallet: dataBBFg.data1.pallet,
-        checker: dataBBFg.data1.checker,
-        time: dataBBFg.data1.time,
+        date: dataBBRpk.data1.date,
+        pallet: dataBBRpk.data1.pallet,
+        checker: dataBBRpk.data1.checker,
+        time: dataBBRpk.data1.time,
       });
     }
   }, []);
@@ -73,7 +73,7 @@ export default function Page() {
           yeslabel="Keluar"
           color="red"
           yesAction={() => {
-            removeLocalstorage("dataBBFg");
+            removeLocalstorage("dataBBRpk");
             router.push("/pages/barang-bocor");
           }}
           noAction={() => {
