@@ -1,18 +1,22 @@
 "use client";
 
-import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleNotch,
+  faPlusCircle,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useContext } from "react";
 import { TableContent } from "../table/TableContent";
 import ModalConfirm from "../modal/ModalConfirm";
 import ModalForm from "../modal/ModalForm";
 import FormInput from "../form/FormInput";
-import CountInput from "../form/CountInput";
 import CheckboxInput from "../form/CheckboxInput";
 import MidInput from "../form/MidInput";
 import { GlobalContext } from "../../context/GlobalContext";
+import CountInput from "../form/CountInput";
 
-export default function CardInputCanvas({ plant }) {
+export default function CardInputCanvas({ plant, data }) {
   const { setGlobalFalse } = useContext(GlobalContext);
   const [onInput, setOnInput] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
@@ -45,37 +49,53 @@ export default function CardInputCanvas({ plant }) {
             setQty(0);
           }}
         >
-          <FormInput label="MID">
-            <MidInput />
-          </FormInput>
+          <div className="flex gap-3">
+            <FormInput label="MID" style="grow">
+              <MidInput />
+            </FormInput>
+            <FormInput label="Kerusakan">
+              <select className="form-input">
+                <option value="asdsad">asdsad</option>
+              </select>
+            </FormInput>
+          </div>
           <FormInput label="Deskripsi">
-            <input type="text" className="form-input" />
+            <input
+              type="text"
+              className="form-input"
+              value={"asdsad"}
+              disabled
+            />
           </FormInput>
-          <FormInput label="Jenis Kerusakan">
-            <input type="text" className="form-input" />
-          </FormInput>
+
           <FormInput label="Qty">
             <CountInput qty={qty} setQty={setQty} />
           </FormInput>
           <FormInput label="Note">
-            <textarea rows={2} className="form-input" />
+            <textarea rows={2} className="form-input" disabled />
           </FormInput>
           <CheckboxInput label="MID Baru" value="mid baru" />
         </ModalForm>
       )}
 
-      <button
-        onClick={() => setOnInput(true)}
+      <div
+        onClick={() => data && setOnInput(true)}
         className={` flex flex-row w-full items-middle gap-2 p-3.5 text-white duration-200 ${
           onInput
             ? "rounded-t-2xl bg-blue/80"
             : "rounded-2xl bg-gray-400 hover:bg-blue"
         }`}
       >
-        {!onInput && <FontAwesomeIcon icon={faPlusCircle} className="" />}
+        {/* <div className={!da ? "hidden" : ""}>
+          <FontAwesomeIcon icon={faPlusCircle} />
+        </div> */}
+
+        <div className={onInput ? "hidden" : ""}>
+          <FontAwesomeIcon icon={faCircleNotch} className="animate-spin" />
+        </div>
         <p className=""> {plant == "Retur" ? "Retur" : "Plant " + plant}</p>
-      </button>
-      {onInput && (
+      </div>
+      {data && onInput && (
         <div className="flex flex-col gap-3 p-4 rounded-b-2xl bg-white border border-blue/60  duration-200">
           <TableContent />
           <div className="botton-action flex flex-row justify-center w-full gap-2 mx-auto">

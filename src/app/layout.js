@@ -18,9 +18,6 @@ const poppins = Poppins({
 export const metadata = {
   title: "Reapack App",
   description: "Warehouse stock management",
-  icons: {
-    icon: "/img/favicon.jpg",
-  },
 };
 
 export default function RootLayout({ children }) {

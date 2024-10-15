@@ -12,10 +12,12 @@ import { useRouter } from "next/navigation";
 import CountInput from "../../components/form/CountInput";
 import capitalize from "../../hooks/capitalize";
 import setLocalstorage from "../../hooks/setLocalstorage";
-import { getCheckerRpk, useFetchBarboc } from "../../Api/ApiBarangBocor";
-import Spinner from "../../components/load/Spinner";
+import { useFetchBarboc, useFetchMatDbase } from "../../Api/useFetch";
+import getLocalstorage from "../../hooks/getLocalstorage";
+import LoadFooter from "../../components/load/loadFooter";
+import updateLocalstorage from "../../hooks/updateLocalstorage";
 
-function ModalBarbocFg({ closeModal, dataApi }) {
+function ModalBarbocFg({ closeModal }) {
   const router = useRouter();
   const { setLoad, dataBBFg, setDataBBFg } = useContext(GlobalContext);
   const [readySubmit, setReadySubmit] = useState(true);
@@ -79,6 +81,9 @@ function ModalBarbocRpk({ closeModal }) {
   const router = useRouter();
   const { setLoad, dataBBRpk, setDataBBRpk } = useContext(GlobalContext);
   const [readySubmit, setReadySubmit] = useState(true);
+  const [checkers, setCheckers] = useState(
+    getLocalstorage("checkerRpk") || false
+  );
   const [pallet, setPallet] = useState(0);
   const [data, setData] = useState({
     date: new Date().toISOString().split("T")[0],
@@ -88,21 +93,18 @@ function ModalBarbocRpk({ closeModal }) {
   });
 
   useEffect(() => {
+    if (!checkers) {
+      updateLocalstorage(
+        "checkerRpk",
+        () => useFetchBarboc("getCheckerRpk"),
+        () => setCheckers(getLocalstorage("checkerRpk"))
+      );
+    }
+  }, []);
+
+  useEffect(() => {
     setData({ ...data, pallet: pallet });
   }, [pallet]);
-
-  // fecth api
-  const [apiData, setApiData] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await useFetchBarboc("getCheckerRpk");
-      setApiData({
-        ...apiData,
-        checkerRpk: res,
-      });
-    };
-    fetchData();
-  }, []);
 
   return (
     <ModalForm
@@ -141,13 +143,15 @@ function ModalBarbocRpk({ closeModal }) {
           onChange={(e) => setData({ ...data, checker: e.target.value })}
         >
           <option value="">Pilih Checker</option>
-          {!apiData.checkerRpk && <option>Loading...</option>}
-          {apiData.checkerRpk &&
-            apiData.checkerRpk.map((checker, i) => (
+          {checkers.length > 1 ? (
+            checkers.map((checker, i) => (
               <option key={i} value={checker}>
                 {checker}
               </option>
-            ))}
+            ))
+          ) : (
+            <option>Loading ...</option>
+          )}
         </select>
       </FormInput>
     </ModalForm>
@@ -157,8 +161,36 @@ function ModalBarbocRpk({ closeModal }) {
 export default function Page() {
   const [modalFg, setModalFg] = useState(false);
   const [modalRpk, setModalRpk] = useState(false);
-  const { setGlobalFalse } = useContext(GlobalContext);
-  useEffect(() => setGlobalFalse(), []);
+  const { setGlobalFalse, loadFt, setLoadFt } = useContext(GlobalContext);
+
+  useEffect(() => {
+    setGlobalFalse();
+    updateLocalstorage(
+      "checkerRpk",
+      () => useFetchBarboc("getCheckerRpk"),
+      () => setLoadFt("update checker"),
+      () => setLoadFt(false)
+    );
+    updateLocalstorage(
+      "damageType",
+      () => useFetchBarboc("getDamageType"),
+      () => setLoadFt("update damage type"),
+      () => setLoadFt(false)
+    );
+    updateLocalstorage(
+      "dBase1015",
+      () => useFetchMatDbase("get1015"),
+      () => setLoadFt("update database"),
+      () => setLoadFt(false)
+    );
+    updateLocalstorage(
+      "dBase1016",
+      () => useFetchMatDbase("get1016"),
+      () => setLoadFt("update database"),
+      () => setLoadFt(false)
+    );
+  }, []);
+
   const closeModal = () => {
     setModalFg(false);
     setModalRpk(false);
@@ -166,6 +198,7 @@ export default function Page() {
 
   return (
     <div className="main-container">
+      <LoadFooter text={loadFt} />
       <BtnHome />
       {modalFg && <ModalBarbocFg closeModal={closeModal} />}
       {modalRpk && <ModalBarbocRpk closeModal={closeModal} />}

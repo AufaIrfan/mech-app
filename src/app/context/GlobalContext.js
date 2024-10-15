@@ -6,6 +6,7 @@ export const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
   const [load, setLoad] = useState(false);
+  const [loadFt, setLoadFt] = useState(false);
   const [dataBBFg, setDataBBFg] = useState(getLocalstorage("dataBBFg") || {});
   const [dataBBRpk, setDataBBRpk] = useState(
     getLocalstorage("dataBBRpk") || {}
@@ -23,6 +24,8 @@ export function GlobalProvider({ children }) {
         setDataBBFg,
         dataBBRpk,
         setDataBBRpk,
+        loadFt,
+        setLoadFt,
       }}
     >
       {children}

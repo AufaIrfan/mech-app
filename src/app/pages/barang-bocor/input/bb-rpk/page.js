@@ -111,7 +111,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="fixed w-full flex flex-row gap-4 mt-2 bottom-0 bg-white container mx-auto lg:max-w-[50vw] p-6 lg:px-12 ">
+      <div className="fixed w-full flex flex-row gap-4 mt-2 bottom-0 bg-white container mx-auto lg:max-w-[60vw] p-6 lg:px-12 ">
         <BtnSubmit
           title=""
           spinAct={false}

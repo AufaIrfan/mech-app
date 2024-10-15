@@ -1,7 +1,13 @@
-export default function MidInput({ data }) {
+export default function MidInput({ data, disable = false }) {
   return (
     <>
-      <input list="mid" name="mid" type="number" className="form-input" />
+      <input
+        list="mid"
+        name="mid"
+        type="number"
+        className="form-input"
+        {...(disable && { disabled: true })}
+      />
       <datalist id="mid">
         <option value="50126">NVW50M-NUVO Wet Wipes Merah 50s</option>
         <option value="50127">NUVO Wet Wipes Biru 50s</option>

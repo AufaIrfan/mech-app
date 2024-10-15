@@ -13,7 +13,7 @@ export default function ModalForm({
     <div
       className={`fixed z-10 pt-[10vh] top-0 left-0 w-full h-full bg-black/40 p-6`}
     >
-      <div className="w-full lg:max-w-[30vw] mx-auto p-6 rounded-3xl bg-white flex flex-col gap-2">
+      <div className="max-w-full md:max-w-[30rem] mx-auto p-6 rounded-3xl bg-white flex flex-col gap-2">
         <div className="mb-2 flex flex-row justify-between items-center">
           <p className="font-bold text-lg truncate pr-3">{title}</p>
           <button

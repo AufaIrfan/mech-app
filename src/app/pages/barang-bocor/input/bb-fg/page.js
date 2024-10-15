@@ -14,15 +14,22 @@ import CardInputCanvas from "../../../../components/card/CardPlantCanvas";
 import BtnSubmit from "../../../../components/button/BtnSubmit";
 import formatDate from "../../../../hooks/fortmatDate";
 import removeLocalstorage from "../../../../hooks/removeLocalstorage";
+import getLocalstorage from "../../../../hooks/getLocalstorage";
+import { useFetchMatDbase } from "../../../../Api/useFetch";
+import setLocalstorage from "../../../../hooks/setLocalstorage";
 
 export default function Page() {
   const router = useRouter();
-  const { setGlobalFalse, setLoad, dataBBFg } = useContext(GlobalContext);
+  const { setGlobalFalse, dataBBFg } = useContext(GlobalContext);
+  const [dbase1015, setDbase1015] = useState(
+    getLocalstorage("dBase1015") || false
+  );
+  const [dbase1016, setDbase1016] = useState(
+    getLocalstorage("dBase1016") || false
+  );
   const [details, setDetails] = useState(false);
   const [simpanConfirm, setSimpanConfirm] = useState(false);
   const [batalConfirm, setBatalConfirm] = useState(false);
-  const [del1015Confirm, setDel1015Confirm] = useState(false);
-  const [del1016Confirm, setDel1016Confirm] = useState(false);
   const [dataDisplay, setDataDisplay] = useState({
     date: "",
     pallet: "",
@@ -38,6 +45,7 @@ export default function Page() {
       router.push("/pages/barang-bocor");
     } else {
       setGlobalFalse();
+      cekLs();
       setDataDisplay({
         date: dataBBFg.data1.date,
         pallet: dataBBFg.data1.pallet,
@@ -46,6 +54,17 @@ export default function Page() {
       });
     }
   }, []);
+
+  async function cekLs() {
+    if (!dbase1015 || !dbase1016) {
+      const fetch1015 = await useFetchMatDbase("get1015");
+      const fetch1016 = await useFetchMatDbase("get1016");
+      if (!dbase1015) setDbase1015(fetch1015);
+      setLocalstorage("dBase1015", fetch1015);
+      if (!dbase1016) setDbase1016(fetch1016);
+      setLocalstorage("dBase1016", fetch1016);
+    }
+  }
 
   const closeModal = () => {
     setSimpanConfirm(false);
@@ -84,20 +103,20 @@ export default function Page() {
 
       <div className="w-full flex flex-col gap-4  pb-[6rem]">
         <div className="pt-4 mb-3 gap-2 w-full flex flex-row items-center justify-between">
-          <h3 className=" font-bold flex-grow">Input Barang Bocor</h3>
+          <h3 className="w-fit font-bold">Input Barang Bocor</h3>
           <button
-            className="flex items-middle gap-2"
+            className="flex items-center gap-2 justify-end"
             onClick={() => setDetails(!details)}
           >
             <p className="text-sm px-3 py-1 bg-blue rounded-xl text-white">
               {formatDate(new Date(dataDisplay.date))}
             </p>
-            <p className="text-sm px-3 py-1 mr-2 bg-blue rounded-xl text-white">
+            <p className="text-sm px-3 py-1 bg-blue rounded-xl text-white">
               {dataDisplay.pallet}
             </p>
             <FontAwesomeIcon
               icon={faChevronDown}
-              className={`duration-200 mx-auto ${details && "rotate-180"}`}
+              className={`duration-200 ${details && "rotate-180"}`}
             />
           </button>
         </div>
@@ -105,13 +124,12 @@ export default function Page() {
         <div className="w-full  flex flex-col gap-4 justify-between">
           <div className="flex flex-col gap-4">
             <Alert text={"Diisi oleh checker finish good"} style={"mb-2"} />
-
-            <CardInputCanvas plant="1015" />
-            <CardInputCanvas plant="1016" />
+            <CardInputCanvas plant="1015" data={dbase1015} />
+            <CardInputCanvas plant="1016" data={dbase1016} />
           </div>
         </div>
       </div>
-      <div className="fixed w-full flex flex-row gap-4 mt-2 bottom-0 bg-white container mx-auto lg:max-w-[50vw] p-6 lg:px-12 ">
+      <div className="fixed w-full flex flex-row gap-4 mt-2 bottom-0 bg-white container mx-auto lg:max-w-[60vw] p-6 lg:px-12 ">
         <BtnSubmit
           title=""
           spinAct={false}

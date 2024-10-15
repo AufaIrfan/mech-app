@@ -24,7 +24,7 @@ export default function Home() {
       <CardHome />
       <div className="menu-content w-full">
         <h3 className="text-lg font-bold mb-3">Menu</h3>
-        <div className="menu-list grid grid-cols-2 gap-4 lg:gap-6">
+        <div className="menu-list grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
           <BtnMenu
             icon={faSoap}
             title="Barang Bocor"
