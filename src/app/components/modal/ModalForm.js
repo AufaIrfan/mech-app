@@ -11,7 +11,7 @@ export default function ModalForm({
 }) {
   return (
     <div
-      className={`fixed z-10 pt-[10vh] top-0 left-0 w-full h-full bg-black/40 p-6`}
+      className={`fixed flex items-middle z-10 top-0 left-0 w-full h-full bg-black/40 p-6`}
     >
       <div className="max-w-full md:max-w-[30rem] mx-auto p-6 rounded-3xl bg-white flex flex-col gap-2">
         <div className="mb-2 flex flex-row justify-between items-center">
@@ -26,7 +26,7 @@ export default function ModalForm({
         {children}
         <BtnSubmit
           title="Submit"
-          style="btn-submit-blue mt-4"
+          style="btn-submit-blue mt-2"
           onClick={() => {
             submitAct();
           }}

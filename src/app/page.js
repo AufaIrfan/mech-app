@@ -4,6 +4,7 @@ import {
   faBoxesStacked,
   faBoxOpen,
   faChartSimple,
+  faDroplet,
   faScissors,
   faSoap,
   faSquarePollHorizontal,
@@ -35,8 +36,9 @@ export default function Home() {
             title="Hasil Repack"
             to="/pages/hasil-repack"
           />
-          <BtnMenu icon={faScissors} title="Scrapping" to="/pages/scrapping" />
+          <BtnMenu icon={faScissors} title="Scrapp" to="/pages/scrapp" />
           <BtnMenu icon={faBoxOpen} title="Packaging" to="/pages/packaging" />
+          <BtnMenu icon={faDroplet} title="SFG" to="/pages/sfg" />
           <BtnMenu
             icon={faSquarePollHorizontal}
             title="Stock Control"

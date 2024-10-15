@@ -1,12 +1,16 @@
 "use client";
 
 import {
+  faChevronCircleDown,
+  faChevronDown,
   faCircleNotch,
+  faEllipsis,
+  faNoteSticky,
   faPlusCircle,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { TableContent } from "../table/TableContent";
 import ModalConfirm from "../modal/ModalConfirm";
 import ModalForm from "../modal/ModalForm";
@@ -18,10 +22,13 @@ import CountInput from "../form/CountInput";
 
 export default function CardInputCanvas({ plant, data }) {
   const { setGlobalFalse } = useContext(GlobalContext);
+  const [dataset, setDataset] = useState(false);
   const [onInput, setOnInput] = useState(false);
+  const [addNote, setAddNote] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [modalInput, setModalInput] = useState(false);
   const [qty, setQty] = useState(0);
+  useEffect(() => setDataset(data), []);
   return (
     <div>
       {deleteData && (
@@ -49,16 +56,9 @@ export default function CardInputCanvas({ plant, data }) {
             setQty(0);
           }}
         >
-          <div className="flex gap-3">
-            <FormInput label="MID" style="grow">
-              <MidInput />
-            </FormInput>
-            <FormInput label="Kerusakan">
-              <select className="form-input">
-                <option value="asdsad">asdsad</option>
-              </select>
-            </FormInput>
-          </div>
+          <FormInput label="MID">
+            <MidInput data={dataset} />
+          </FormInput>
           <FormInput label="Deskripsi">
             <input
               type="text"
@@ -71,27 +71,49 @@ export default function CardInputCanvas({ plant, data }) {
           <FormInput label="Qty">
             <CountInput qty={qty} setQty={setQty} />
           </FormInput>
-          <FormInput label="Note">
-            <textarea rows={2} className="form-input" disabled />
-          </FormInput>
-          <CheckboxInput label="MID Baru" value="mid baru" />
+          <div className="flex gap-5 items-end">
+            <FormInput label="Kerusakan" style="grow">
+              <select className="form-input">
+                <option value="asdsad">asdsasdasdsad</option>
+              </select>
+            </FormInput>
+
+            <button
+              className=" p-2 w-[3em] mb-2 rounded-2xl"
+              onClick={() => setAddNote(!addNote)}
+            >
+              <FontAwesomeIcon
+                icon={faNoteSticky}
+                className={`text-2xl hover:text-blue duration-200 ${
+                  addNote ? "text-blue " : "text-gray-500"
+                }`}
+              />
+            </button>
+          </div>
+
+          {addNote && (
+            <FormInput label="Note">
+              <textarea rows={3} className="form-input" />
+            </FormInput>
+          )}
+          {/* <CheckboxInput label="MID Baru" value="mid baru" /> */}
         </ModalForm>
       )}
 
       <div
-        onClick={() => data && setOnInput(true)}
+        onClick={() => dataset && setOnInput(true)}
         className={` flex flex-row w-full items-middle gap-2 p-3.5 text-white duration-200 ${
           onInput
             ? "rounded-t-2xl bg-blue/80"
             : "rounded-2xl bg-gray-400 hover:bg-blue"
         }`}
       >
-        {/* <div className={!da ? "hidden" : ""}>
-          <FontAwesomeIcon icon={faPlusCircle} />
-        </div> */}
-
-        <div className={onInput ? "hidden" : ""}>
+        <div className={dataset ? "hidden" : ""}>
           <FontAwesomeIcon icon={faCircleNotch} className="animate-spin" />
+        </div>
+
+        <div className={!dataset || onInput ? "hidden" : ""}>
+          <FontAwesomeIcon icon={faPlusCircle} />
         </div>
         <p className=""> {plant == "Retur" ? "Retur" : "Plant " + plant}</p>
       </div>

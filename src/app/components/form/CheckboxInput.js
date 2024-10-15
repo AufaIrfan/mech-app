@@ -9,9 +9,7 @@ export default function CheckboxInput({ label, value, onChange }) {
         onChange={onChange}
         className="rounded-full p-2"
       />
-      <label for="checkbox" className="m-0">
-        {label}
-      </label>
+      <label className="m-0">{label}</label>
     </div>
   );
 }

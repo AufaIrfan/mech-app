@@ -1,4 +1,8 @@
+import { useEffect, useState } from "react";
+
 export default function MidInput({ data, disable = false }) {
+  const [dataset, setDataset] = useState(false);
+  useEffect(() => setDataset(data.slice(1)), []);
   return (
     <>
       <input
@@ -9,10 +13,12 @@ export default function MidInput({ data, disable = false }) {
         {...(disable && { disabled: true })}
       />
       <datalist id="mid">
-        <option value="50126">NVW50M-NUVO Wet Wipes Merah 50s</option>
-        <option value="50127">NUVO Wet Wipes Biru 50s</option>
-        <option value="60986">SOKLIN LIQUID DET VIOLET PCH 100ML</option>
-        <option value="60987">SOKLIN LIQUID DET ANTI BAC PCH 230ML</option>
+        {dataset &&
+          dataset.map((item, index) => (
+            <option key={index} value={item[1]}>
+              {item[2]}
+            </option>
+          ))}
       </datalist>
     </>
   );

@@ -180,13 +180,13 @@ export default function Page() {
     updateLocalstorage(
       "dBase1015",
       () => useFetchMatDbase("get1015"),
-      () => setLoadFt("update database"),
+      () => setLoadFt("update dataset"),
       () => setLoadFt(false)
     );
     updateLocalstorage(
       "dBase1016",
       () => useFetchMatDbase("get1016"),
-      () => setLoadFt("update database"),
+      () => setLoadFt("update dataset"),
       () => setLoadFt(false)
     );
   }, []);

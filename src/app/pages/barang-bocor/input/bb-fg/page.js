@@ -27,6 +27,9 @@ export default function Page() {
   const [dbase1016, setDbase1016] = useState(
     getLocalstorage("dBase1016") || false
   );
+  const [damageType, setDamageType] = useState(
+    getLocalstorage("damageType") || false
+  );
   const [details, setDetails] = useState(false);
   const [simpanConfirm, setSimpanConfirm] = useState(false);
   const [batalConfirm, setBatalConfirm] = useState(false);
@@ -57,8 +60,13 @@ export default function Page() {
 
   async function cekLs() {
     if (!dbase1015 || !dbase1016) {
+      const fetchDamage = await useFetchMatDbase("getDamageType");
       const fetch1015 = await useFetchMatDbase("get1015");
       const fetch1016 = await useFetchMatDbase("get1016");
+      if (!fetchDamage) setDamageType(fetchDamage);
+      setLocalstorage("damageType", fetchDamage);
+      if (!dbase1015) setDbase1015(fetch1015);
+      setLocalstorage("dBase1015", fetch1015);
       if (!dbase1015) setDbase1015(fetch1015);
       setLocalstorage("dBase1015", fetch1015);
       if (!dbase1016) setDbase1016(fetch1016);
