@@ -1,10 +1,8 @@
 "use client";
 
 import {
-  faChevronCircleDown,
-  faChevronDown,
   faCircleNotch,
-  faEllipsis,
+  faExclamationCircle,
   faNoteSticky,
   faPlusCircle,
   faTrash,
@@ -19,16 +17,37 @@ import CheckboxInput from "../form/CheckboxInput";
 import MidInput from "../form/MidInput";
 import { GlobalContext } from "../../context/GlobalContext";
 import CountInput from "../form/CountInput";
+import getLocalstorage from "../../hooks/getLocalstorage";
+import setLocalstorage from "../../hooks/setLocalstorage";
+import { useFetchBarboc } from "../../Api/useFetch";
 
 export default function CardInputCanvas({ plant, data }) {
   const { setGlobalFalse } = useContext(GlobalContext);
   const [dataset, setDataset] = useState(false);
+  const [damageType, setDamageType] = useState(
+    getLocalstorage("damageType") || false
+  );
   const [onInput, setOnInput] = useState(false);
+  const [onInputMid, setOnInputMid] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
   const [addNote, setAddNote] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [modalInput, setModalInput] = useState(false);
   const [qty, setQty] = useState(0);
-  useEffect(() => setDataset(data), []);
+
+  async function cekLs() {
+    if (!damageType) {
+      const fetchDamage = await useFetchBarboc("getDamageType");
+      setDamageType(fetchDamage);
+      setLocalstorage("damageType", fetchDamage);
+    }
+  }
+
+  useEffect(() => {
+    setDataset(data);
+    cekLs();
+  }, []);
+
   return (
     <div>
       {deleteData && (
@@ -53,17 +72,33 @@ export default function CardInputCanvas({ plant, data }) {
           title={plant == "Retur" ? "Input Retur" : "Input Plant " + plant}
           closeAct={() => {
             setModalInput(false);
+            setOnInputMid(false);
             setQty(0);
           }}
         >
           <FormInput label="MID">
-            <MidInput data={dataset} />
+            <MidInput data={dataset} onchange={setOnInputMid} />
+            <div className="flex gap-x-4 gap-y-3 pt-4 pb-2 lg:items-center items-start  lg:flex-row flex-col">
+              <div className="flex gap-3 items-center">
+                <FontAwesomeIcon
+                  icon={faExclamationCircle}
+                  className="text-red-500 text-lg"
+                />
+                <p className="text-sm text-red-500">
+                  Data not found, apakah MID baru?
+                </p>
+              </div>
+              <div className="flex items-center ">
+                <CheckboxInput value="mid baru" />
+                <p className="text-sm text-gray-500">Ya, MID baru</p>
+              </div>
+            </div>
           </FormInput>
           <FormInput label="Deskripsi">
             <input
               type="text"
               className="form-input"
-              value={"asdsad"}
+              value={onInputMid}
               disabled
             />
           </FormInput>
@@ -71,23 +106,40 @@ export default function CardInputCanvas({ plant, data }) {
           <FormInput label="Qty">
             <CountInput qty={qty} setQty={setQty} />
           </FormInput>
-          <div className="flex gap-5 items-end">
+          <div className="flex gap-3 items-end">
             <FormInput label="Kerusakan" style="grow">
               <select className="form-input">
-                <option value="asdsad">asdsasdasdsad</option>
+                {damageType ? (
+                  damageType.map((item, index) => (
+                    <option key={index} value={item}>
+                      {item}
+                    </option>
+                  ))
+                ) : (
+                  <option>Loading...</option>
+                )}
               </select>
             </FormInput>
 
             <button
-              className=" p-2 w-[3em] mb-2 rounded-2xl"
+              className="group p-2 px-4 mb-2 border rounded-2xl flex gap-2 items-middle hover:border-blue  duration-200"
               onClick={() => setAddNote(!addNote)}
             >
               <FontAwesomeIcon
                 icon={faNoteSticky}
-                className={`text-2xl hover:text-blue duration-200 ${
+                className={`text-xl group-hover:text-blue duration-200 ${
                   addNote ? "text-blue " : "text-gray-500"
                 }`}
               />
+              <p
+                className={
+                  addNote
+                    ? "text-blue"
+                    : "text-gray-500 group-hover:text-blue duration-200"
+                }
+              >
+                Note
+              </p>
             </button>
           </div>
 
@@ -96,7 +148,6 @@ export default function CardInputCanvas({ plant, data }) {
               <textarea rows={3} className="form-input" />
             </FormInput>
           )}
-          {/* <CheckboxInput label="MID Baru" value="mid baru" /> */}
         </ModalForm>
       )}
 
@@ -117,6 +168,7 @@ export default function CardInputCanvas({ plant, data }) {
         </div>
         <p className=""> {plant == "Retur" ? "Retur" : "Plant " + plant}</p>
       </div>
+
       {data && onInput && (
         <div className="flex flex-col gap-3 p-4 rounded-b-2xl bg-white border border-blue/60  duration-200">
           <TableContent />
