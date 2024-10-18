@@ -4,14 +4,11 @@ export default function MidInput({
   data,
   disable = false,
   onchange = () => {},
+  cekmid = () => {},
 }) {
   const [dataset, setDataset] = useState(false);
   useEffect(() => setDataset(data.slice(1)), []);
-  function cekMid(e) {
-    const y = data.find((item) => item[1] == e);
-    if (y) console.log(y[2]);
-    else console.log(false);
-  }
+
   return (
     <>
       <input
@@ -21,7 +18,7 @@ export default function MidInput({
         className="form-input"
         onChange={(e) => {
           onchange(e.target.value);
-          cekMid(e.target.value);
+          cekmid(e.target.value);
         }}
         {...(disable && { disabled: true })}
       />

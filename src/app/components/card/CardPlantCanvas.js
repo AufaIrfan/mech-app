@@ -1,10 +1,12 @@
 "use client";
 
 import {
+  faCircleCheck,
   faCircleNotch,
   faExclamationCircle,
   faNoteSticky,
   faPlusCircle,
+  faTimesCircle,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,7 +31,8 @@ export default function CardInputCanvas({ plant, data }) {
   );
   const [onInput, setOnInput] = useState(false);
   const [onInputMid, setOnInputMid] = useState(false);
-  const [isNotFound, setIsNotFound] = useState(false);
+  const [desc, setDesc] = useState(false);
+  const [alertMid, setAlertMid] = useState(false);
   const [addNote, setAddNote] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [modalInput, setModalInput] = useState(false);
@@ -41,6 +44,12 @@ export default function CardInputCanvas({ plant, data }) {
       setDamageType(fetchDamage);
       setLocalstorage("damageType", fetchDamage);
     }
+  }
+
+  function cekMid(e) {
+    let mid = data.find((item) => item[1] == e);
+    if (mid) setDesc(mid[2]);
+    else setDesc(false);
   }
 
   useEffect(() => {
@@ -73,33 +82,60 @@ export default function CardInputCanvas({ plant, data }) {
           closeAct={() => {
             setModalInput(false);
             setOnInputMid(false);
+            setDesc(false);
+            setAlertMid(false);
             setQty(0);
           }}
         >
           <FormInput label="MID">
-            <MidInput data={dataset} onchange={setOnInputMid} />
-            <div className="flex gap-x-4 gap-y-3 pt-4 pb-2 lg:items-center items-start  lg:flex-row flex-col">
-              <div className="flex gap-3 items-center">
+            <div className="flex gap-3 items-center relative">
+              <MidInput
+                data={dataset}
+                onchange={setOnInputMid}
+                cekmid={cekMid}
+              />
+              {desc ? (
                 <FontAwesomeIcon
-                  icon={faExclamationCircle}
-                  className="text-red-500 text-lg"
+                  icon={faCircleCheck}
+                  className="text-green-500 text-xl px-2 py-2 lg:px-4 absolute right-2 bg-white rounded-2xl"
                 />
-                <p className="text-sm text-red-500">
-                  Data not found, apakah MID baru?
-                </p>
-              </div>
-              <div className="flex items-center ">
-                <CheckboxInput value="mid baru" />
-                <p className="text-sm text-gray-500">Ya, MID baru</p>
-              </div>
+              ) : (
+                <button
+                  className="absolute right-2 px-2 pb-0 pt-1 lg:px-4 bg-white rounded-2xl"
+                  onClick={() => setAlertMid(!alertMid)}
+                >
+                  <FontAwesomeIcon
+                    icon={faExclamationCircle}
+                    className="text-red-500 text-xl"
+                  />
+                </button>
+              )}
             </div>
+            {!desc && alertMid && (
+              <div className="flex gap-x-4 gap-y-3 pt-4 pb-2 lg:items-center items-start  lg:flex-row flex-col">
+                <div className="flex gap-3 items-center">
+                  <FontAwesomeIcon
+                    icon={faExclamationCircle}
+                    className="text-red-500 text-lg"
+                  />
+                  <p className="text-sm text-red-500">
+                    Not found, apakah MID baru?
+                  </p>
+                </div>
+                <div className="flex items-center ">
+                  <CheckboxInput value="mid baru" />
+                  <p className="text-sm text-gray-500">Ya, MID baru</p>
+                </div>
+              </div>
+            )}
           </FormInput>
           <FormInput label="Deskripsi">
             <input
               type="text"
               className="form-input"
-              value={onInputMid}
-              disabled
+              value={desc || ""}
+              onChange={(e) => setDesc(e.target.value)}
+              {...(desc && { disabled: true })}
             />
           </FormInput>
 
