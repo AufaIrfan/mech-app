@@ -6,7 +6,7 @@ export default function CountInput({ qty, setQty, cek }) {
   return (
     <div className="grid grid-cols-4 gap-4">
       <button
-        onClick={() => setQty(qty - 1)}
+        onClick={() => setQty(new Number(qty) - 1)}
         className="font-bold btn-submit btn-submit-blue-outline"
         {...(qty == 0 && { disabled: true })}
       >
@@ -19,10 +19,10 @@ export default function CountInput({ qty, setQty, cek }) {
           !cek && !qty ? "form-input-false" : "form-input"
         }`}
         value={qty}
-        onChange={(e) => setQty(Number(e.target.value))}
+        onChange={(e) => setQty(new Number(e.target.value))}
       />
       <button
-        onClick={() => setQty(qty + 1)}
+        onClick={() => setQty(new Number(qty) + 1)}
         className="font-bold btn-submit btn-submit-blue-outline"
       >
         <FontAwesomeIcon icon={faPlus} />

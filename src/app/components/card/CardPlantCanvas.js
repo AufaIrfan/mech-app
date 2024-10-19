@@ -22,6 +22,7 @@ import CountInput from "../form/CountInput";
 import getLocalstorage from "../../hooks/getLocalstorage";
 import setLocalstorage from "../../hooks/setLocalstorage";
 import { useFetchBarboc } from "../../Api/useFetch";
+import { Edu_QLD_Beginner } from "next/font/google";
 
 export default function CardInputCanvas({ plant, data }) {
   const { setGlobalFalse } = useContext(GlobalContext);
@@ -30,13 +31,18 @@ export default function CardInputCanvas({ plant, data }) {
     getLocalstorage("damageType") || false
   );
   const [onInput, setOnInput] = useState(false);
-  const [onInputMid, setOnInputMid] = useState(false);
-  const [desc, setDesc] = useState(false);
-  const [alertMid, setAlertMid] = useState(false);
+  const [readySubmit, setReadySubmit] = useState(true);
   const [addNote, setAddNote] = useState(false);
   const [deleteData, setDeleteData] = useState(false);
   const [modalInput, setModalInput] = useState(false);
+  const [alertMaintain, setAlertMaintain] = useState(false);
+  const [mid, setMid] = useState(false);
+  const [desc, setDesc] = useState(false);
   const [qty, setQty] = useState(0);
+  const [damage, setDamage] = useState(false);
+  const [note, setNote] = useState("");
+  const [needMaintain, setNeedMaintain] = useState(false);
+  const [maintainDesc, setMaintainDesc] = useState(false);
 
   async function cekLs() {
     if (!damageType) {
@@ -48,12 +54,19 @@ export default function CardInputCanvas({ plant, data }) {
 
   function cekMid(e) {
     let mid = data.find((item) => item[1] == e);
-    if (mid) setDesc(mid[2]);
-    else setDesc(false);
+    if (mid) {
+      setDesc(mid[2]);
+      setNeedMaintain(false);
+      setMaintainDesc(false);
+    } else {
+      setDesc(false);
+      setNeedMaintain(true);
+    }
   }
 
   useEffect(() => {
     setDataset(data);
+    setDamage(damageType[0]);
     cekLs();
   }, []);
 
@@ -81,20 +94,51 @@ export default function CardInputCanvas({ plant, data }) {
           title={plant == "Retur" ? "Input Retur" : "Input Plant " + plant}
           closeAct={() => {
             setModalInput(false);
-            setOnInputMid(false);
+            setAlertMaintain(false);
+            setReadySubmit(true);
+            setMid(false);
             setDesc(false);
-            setAlertMid(false);
             setQty(0);
+            setDamage(damageType[0]);
+            setNote("");
+            setNeedMaintain(false);
+            setMaintainDesc(false);
+            setAddNote(false);
+          }}
+          submitAct={() => {
+            console.log(
+              mid,
+              desc,
+              qty,
+              damage,
+              note,
+              needMaintain,
+              maintainDesc
+            );
+            if (mid && desc && qty && damage) {
+              if (!needMaintain && !maintainDesc) {
+                console.log("submit");
+              } else if (needMaintain && maintainDesc) {
+                console.log("need maintain");
+              } else {
+                setAlertMaintain(true);
+                setReadySubmit(false);
+                console.log("mid baru has ben checked");
+              }
+            } else {
+              setReadySubmit(false);
+            }
           }}
         >
           <FormInput label="MID">
             <div className="flex gap-3 items-center relative">
               <MidInput
                 data={dataset}
-                onchange={setOnInputMid}
+                onchange={setMid}
                 cekmid={cekMid}
+                readysubmit={readySubmit}
               />
-              {desc ? (
+              {!needMaintain ? (
                 <FontAwesomeIcon
                   icon={faCircleCheck}
                   className="text-green-500 text-xl px-2 py-2 lg:px-4 absolute right-2 bg-white rounded-2xl"
@@ -102,7 +146,7 @@ export default function CardInputCanvas({ plant, data }) {
               ) : (
                 <button
                   className="absolute right-2 px-2 pb-0 pt-1 lg:px-4 bg-white rounded-2xl"
-                  onClick={() => setAlertMid(!alertMid)}
+                  onClick={() => setAlertMaintain(!alertMaintain)}
                 >
                   <FontAwesomeIcon
                     icon={faExclamationCircle}
@@ -111,7 +155,7 @@ export default function CardInputCanvas({ plant, data }) {
                 </button>
               )}
             </div>
-            {!desc && alertMid && (
+            {needMaintain && alertMaintain && (
               <div className="flex gap-x-4 gap-y-3 pt-4 pb-2 lg:items-center items-start  lg:flex-row flex-col">
                 <div className="flex gap-3 items-center">
                   <FontAwesomeIcon
@@ -123,7 +167,14 @@ export default function CardInputCanvas({ plant, data }) {
                   </p>
                 </div>
                 <div className="flex items-center ">
-                  <CheckboxInput value="mid baru" />
+                  <CheckboxInput
+                    value="mid baru"
+                    onChange={(e) =>
+                      e.target.checked
+                        ? setMaintainDesc(e.target.value)
+                        : setMaintainDesc(false)
+                    }
+                  />
                   <p className="text-sm text-gray-500">Ya, MID baru</p>
                 </div>
               </div>
@@ -132,19 +183,24 @@ export default function CardInputCanvas({ plant, data }) {
           <FormInput label="Deskripsi">
             <input
               type="text"
-              className="form-input"
+              className={`${
+                !desc && !readySubmit ? "form-input-false" : "form-input"
+              }`}
               value={desc || ""}
               onChange={(e) => setDesc(e.target.value)}
-              {...(desc && { disabled: true })}
+              {...(desc && !needMaintain && { disabled: true })}
             />
           </FormInput>
 
           <FormInput label="Qty">
-            <CountInput qty={qty} setQty={setQty} />
+            <CountInput qty={qty} setQty={setQty} cek={readySubmit} />
           </FormInput>
           <div className="flex gap-3 items-end">
             <FormInput label="Kerusakan" style="grow">
-              <select className="form-input">
+              <select
+                className="form-input"
+                onChange={(e) => setDamage(e.target.value)}
+              >
                 {damageType ? (
                   damageType.map((item, index) => (
                     <option key={index} value={item}>
@@ -181,7 +237,11 @@ export default function CardInputCanvas({ plant, data }) {
 
           {addNote && (
             <FormInput label="Note">
-              <textarea rows={3} className="form-input" />
+              <textarea
+                rows={3}
+                className="form-input"
+                onChange={(e) => setNote(e.target.value)}
+              />
             </FormInput>
           )}
         </ModalForm>
