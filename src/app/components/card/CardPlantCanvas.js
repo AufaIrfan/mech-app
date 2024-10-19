@@ -6,7 +6,6 @@ import {
   faExclamationCircle,
   faNoteSticky,
   faPlusCircle,
-  faTimesCircle,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,9 +21,13 @@ import CountInput from "../form/CountInput";
 import getLocalstorage from "../../hooks/getLocalstorage";
 import setLocalstorage from "../../hooks/setLocalstorage";
 import { useFetchBarboc } from "../../Api/useFetch";
-import { Edu_QLD_Beginner } from "next/font/google";
 
-export default function CardInputCanvas({ plant, data }) {
+export default function CardInputCanvas({
+  plant,
+  data,
+  storedData,
+  setStoredData,
+}) {
   const { setGlobalFalse } = useContext(GlobalContext);
   const [dataset, setDataset] = useState(false);
   const [damageType, setDamageType] = useState(
@@ -43,6 +46,7 @@ export default function CardInputCanvas({ plant, data }) {
   const [note, setNote] = useState("");
   const [needMaintain, setNeedMaintain] = useState(false);
   const [maintainDesc, setMaintainDesc] = useState(false);
+  const [storeData, setStoreData] = useState([]);
 
   async function cekLs() {
     if (!damageType) {
@@ -64,6 +68,20 @@ export default function CardInputCanvas({ plant, data }) {
     }
   }
 
+  function closeModal() {
+    setModalInput(false);
+    setAlertMaintain(false);
+    setReadySubmit(true);
+    setMid(false);
+    setDesc(false);
+    setQty(0);
+    setDamage(damageType[0]);
+    setNote("");
+    setNeedMaintain(false);
+    setMaintainDesc(false);
+    setAddNote(false);
+  }
+
   useEffect(() => {
     setDataset(data);
     setDamage(damageType[0]);
@@ -80,6 +98,7 @@ export default function CardInputCanvas({ plant, data }) {
           yesAction={() => {
             setOnInput(false);
             setDeleteData(false);
+            setStoredData([]);
             setGlobalFalse();
           }}
           noAction={() => {
@@ -93,32 +112,22 @@ export default function CardInputCanvas({ plant, data }) {
         <ModalForm
           title={plant == "Retur" ? "Input Retur" : "Input Plant " + plant}
           closeAct={() => {
-            setModalInput(false);
-            setAlertMaintain(false);
-            setReadySubmit(true);
-            setMid(false);
-            setDesc(false);
-            setQty(0);
-            setDamage(damageType[0]);
-            setNote("");
-            setNeedMaintain(false);
-            setMaintainDesc(false);
-            setAddNote(false);
+            closeModal();
           }}
           submitAct={() => {
-            console.log(
-              mid,
-              desc,
-              qty,
-              damage,
-              note,
-              needMaintain,
-              maintainDesc
-            );
             if (mid && desc && qty && damage) {
               if (!needMaintain && !maintainDesc) {
-                console.log("submit");
+                setStoredData([
+                  ...storedData,
+                  [plant, mid, desc, qty, damage, note, maintainDesc],
+                ]);
+                closeModal();
               } else if (needMaintain && maintainDesc) {
+                setStoredData([
+                  ...storedData,
+                  [plant, mid, desc, qty, damage, note, maintainDesc],
+                ]);
+                closeModal();
                 console.log("need maintain");
               } else {
                 setAlertMaintain(true);
@@ -162,7 +171,7 @@ export default function CardInputCanvas({ plant, data }) {
                     icon={faExclamationCircle}
                     className="text-red-500 text-lg"
                   />
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-red-400">
                     Not found, apakah MID baru?
                   </p>
                 </div>
@@ -267,7 +276,7 @@ export default function CardInputCanvas({ plant, data }) {
 
       {data && onInput && (
         <div className="flex flex-col gap-3 p-4 rounded-b-2xl bg-white border border-blue/60  duration-200">
-          <TableContent />
+          <TableContent data={storedData} setData={setStoredData} />
           <div className="botton-action flex flex-row justify-center w-full gap-2 mx-auto">
             <button
               onClick={() => setDeleteData(true)}

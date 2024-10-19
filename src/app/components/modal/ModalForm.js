@@ -6,8 +6,14 @@ import BtnSubmit from "../button/BtnSubmit";
 export default function ModalForm({
   children,
   title,
+  btnLabel = "Submit",
   closeAct,
   submitAct = () => {},
+  optionalBtn = false,
+  optionalBtnLabel,
+  optionalBtnIcon,
+  optionalBtnStyle,
+  optionalBtnAct = () => {},
 }) {
   return (
     <div
@@ -24,13 +30,25 @@ export default function ModalForm({
           </button>
         </div>
         {children}
-        <BtnSubmit
-          title="Submit"
-          style="btn-submit-blue mt-2"
-          onClick={() => {
-            submitAct();
-          }}
-        />
+        <div className="flex gap-3">
+          {optionalBtn && (
+            <BtnSubmit
+              title={optionalBtnLabel}
+              icon={optionalBtnIcon}
+              style={optionalBtnStyle + " mt-2"}
+              onClick={() => {
+                submitAct();
+              }}
+            />
+          )}
+          <BtnSubmit
+            title={btnLabel}
+            style="btn-submit-blue mt-2 grow"
+            onClick={() => {
+              submitAct();
+            }}
+          />
+        </div>
       </div>
     </div>
   );

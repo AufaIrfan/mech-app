@@ -37,6 +37,9 @@ export default function Page() {
     time: "",
   });
 
+  const [storeData1015, setStoreData1015] = useState([]);
+  const [storeData1016, setStoreData1016] = useState([]);
+
   useEffect(() => {
     if (
       Object.keys(dataBBFg).length == 0 ||
@@ -54,6 +57,18 @@ export default function Page() {
       });
     }
   }, []);
+
+  useEffect(() => {
+    console.log(storeData1015);
+    console.log(storeData1016);
+    setLocalstorage("dataBBFg", {
+      ...dataBBFg,
+      data2: {
+        storeData1015,
+        storeData1016,
+      },
+    });
+  }, [storeData1015, storeData1016]);
 
   async function cekLs() {
     if (!dbase1015 || !dbase1016) {
@@ -126,8 +141,18 @@ export default function Page() {
         <div className="w-full  flex flex-col gap-4 justify-between">
           <div className="flex flex-col gap-4">
             <Alert text={"Diisi oleh checker finish good"} style={"mb-2"} />
-            <CardInputCanvas plant="1015" data={dbase1015} />
-            <CardInputCanvas plant="1016" data={dbase1016} />
+            <CardInputCanvas
+              plant="1015"
+              data={dbase1015}
+              storedData={storeData1015}
+              setStoredData={setStoreData1015}
+            />
+            <CardInputCanvas
+              plant="1016"
+              data={dbase1016}
+              storedData={storeData1016}
+              setStoredData={setStoreData1016}
+            />
           </div>
         </div>
       </div>
