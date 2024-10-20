@@ -6,14 +6,16 @@ import ModalForm from "../modal/ModalForm";
 import FormInput from "../form/FormInput";
 import getLocalstorage from "../../hooks/getLocalstorage";
 import CountInput from "../form/CountInput";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faL, faNoteSticky, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export function TableContent({ data, setData }) {
   const [openEdit, setOpenEdit] = useState(false);
-  const [editData, setEditData] = useState({});
+  const [addNote, setAddNote] = useState(false);
+  const [editData, setEditData] = useState(false);
   const [damageType, setDamageType] = useState(getLocalstorage("damageType"));
   useEffect(() => {
-    console.log(editData);
+    if (editData) editData.data[5] && setAddNote(true);
   }, [editData]);
   return (
     <>
@@ -24,11 +26,18 @@ export function TableContent({ data, setData }) {
           open={openEdit}
           closeAct={() => {
             setOpenEdit(false);
-            setEditData({});
+            setEditData(false);
+            setAddNote(false);
           }}
           optionalBtn={true}
           optionalBtnIcon={faTrash}
           optionalBtnStyle="btn-submit-red-outline px-5"
+          optionalBtnAct={() => {
+            setData(
+              data.filter((item, index) => index !== editData.index && item)
+            );
+            setOpenEdit(false);
+          }}
           submitAct={() => setOpenEdit(false)}
         >
           <FormInput label="MID">
@@ -62,14 +71,11 @@ export function TableContent({ data, setData }) {
                   editData.data[4] = e.target.value;
                   setEditData({ ...editData });
                 }}
+                value={editData.data[4]}
               >
                 {damageType ? (
                   damageType.map((item, index) => (
-                    <option
-                      key={index}
-                      value={item}
-                      selected={editData.data[4] == item}
-                    >
+                    <option key={index} value={item}>
                       {item}
                     </option>
                   ))
@@ -79,27 +85,43 @@ export function TableContent({ data, setData }) {
               </select>
             </FormInput>
 
-            {/* <button
-              className="group p-2 px-4 mb-2 border rounded-2xl flex gap-2 items-middle hover:border-blue  duration-200"
+            <button
               onClick={() => setAddNote(!addNote)}
+              className="group p-2 px-4 mb-2 border rounded-2xl flex gap-2 items-middle hover:border-blue  duration-200"
             >
               <FontAwesomeIcon
                 icon={faNoteSticky}
                 className={`text-xl group-hover:text-blue duration-200 ${
-                  addNote ? "text-blue " : "text-gray-500"
+                  editData.data[5] != "" || addNote
+                    ? "text-blue "
+                    : "text-gray-500"
                 }`}
               />
               <p
                 className={
-                  addNote
+                  editData.data[5] != "" || addNote
                     ? "text-blue"
                     : "text-gray-500 group-hover:text-blue duration-200"
                 }
               >
                 Note
               </p>
-            </button> */}
+            </button>
           </div>
+
+          {(addNote || editData.data[5] != "") && (
+            <FormInput label="Note">
+              <textarea
+                rows={3}
+                className="form-input"
+                value={editData.data[5]}
+                onChange={(e) => {
+                  editData.data[5] = e.target.value;
+                  setEditData({ ...editData });
+                }}
+              />
+            </FormInput>
+          )}
           {/* <FormInput label="Deskripsi">
             <input
               type="text"

@@ -37,8 +37,16 @@ export default function Page() {
     time: "",
   });
 
-  const [storeData1015, setStoreData1015] = useState([]);
-  const [storeData1016, setStoreData1016] = useState([]);
+  const [storeData1015, setStoreData1015] = useState(
+    (getLocalstorage("dataBBFg") &&
+      getLocalstorage("dataBBFg").data2.storeData1015) ||
+      []
+  );
+  const [storeData1016, setStoreData1016] = useState(
+    (getLocalstorage("dataBBFg") &&
+      getLocalstorage("dataBBFg").data2.storeData1016) ||
+      []
+  );
 
   useEffect(() => {
     if (
@@ -59,8 +67,6 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    console.log(storeData1015);
-    console.log(storeData1016);
     setLocalstorage("dataBBFg", {
       ...dataBBFg,
       data2: {

@@ -39,8 +39,11 @@ function ModalBarbocFg({ closeModal }) {
       submitAct={() => {
         if (data.date && data.pallet && data.checker) {
           setLoad(true);
-          setDataBBFg({ ...dataBBFg, data1: data });
-          setLocalstorage("dataBBFg", { ...dataBBFg, data1: data });
+          setDataBBFg({ data1: data });
+          setLocalstorage("dataBBFg", {
+            data1: data,
+            data2: { storeData1015: [], storeData1016: [] },
+          });
           router.push("/pages/barang-bocor/input/bb-fg");
         } else {
           setReadySubmit(false);

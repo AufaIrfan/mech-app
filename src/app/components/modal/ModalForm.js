@@ -37,7 +37,7 @@ export default function ModalForm({
               icon={optionalBtnIcon}
               style={optionalBtnStyle + " mt-2"}
               onClick={() => {
-                submitAct();
+                optionalBtnAct();
               }}
             />
           )}

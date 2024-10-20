@@ -46,7 +46,6 @@ export default function CardInputCanvas({
   const [note, setNote] = useState("");
   const [needMaintain, setNeedMaintain] = useState(false);
   const [maintainDesc, setMaintainDesc] = useState(false);
-  const [storeData, setStoreData] = useState([]);
 
   async function cekLs() {
     if (!damageType) {
@@ -86,6 +85,9 @@ export default function CardInputCanvas({
     setDataset(data);
     setDamage(damageType[0]);
     cekLs();
+    if (storedData.length > 0) {
+      setOnInput(true);
+    }
   }, []);
 
   return (
@@ -119,13 +121,13 @@ export default function CardInputCanvas({
               if (!needMaintain && !maintainDesc) {
                 setStoredData([
                   ...storedData,
-                  [plant, mid, desc, qty, damage, note, maintainDesc],
+                  [plant, Number(mid), desc, qty, damage, note, maintainDesc],
                 ]);
                 closeModal();
               } else if (needMaintain && maintainDesc) {
                 setStoredData([
                   ...storedData,
-                  [plant, mid, desc, qty, damage, note, maintainDesc],
+                  [plant, Number(mid), desc, qty, damage, note, maintainDesc],
                 ]);
                 closeModal();
                 console.log("need maintain");
