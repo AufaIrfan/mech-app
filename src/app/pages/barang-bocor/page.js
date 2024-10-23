@@ -1,6 +1,16 @@
 "use client";
 
-import { faSoap } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAdd,
+  faAddressCard,
+  faChevronDown,
+  faChevronUp,
+  faMinus,
+  faPlugCirclePlus,
+  faPlus,
+  faPlusCircle,
+  faSoap,
+} from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 import BtnHome from "../../components/button/BtnHome";
@@ -16,10 +26,13 @@ import { useFetchBarboc, useFetchMatDbase } from "../../Api/useFetch";
 import getLs from "../../hooks/getLs";
 import LoadFooter from "../../components/load/loadFooter";
 import updateLocalstorage from "../../hooks/updateLocalstorage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ModalBarbocFg({ closeModal }) {
   const router = useRouter();
   const { setLoad, dataBBFg, setDataBBFg } = useContext(GlobalContext);
+  const [checkers, setCheckers] = useState(getLs("checkerFg") || false);
+  const [addChecker, setAddChecker] = useState(false);
   const [readySubmit, setReadySubmit] = useState(true);
   const [pallet, setPallet] = useState(0);
   const [data, setData] = useState({
@@ -37,7 +50,12 @@ function ModalBarbocFg({ closeModal }) {
     <ModalForm
       title="Barang Bocor Finish Good"
       submitAct={() => {
-        if (data.date && data.pallet && data.checker) {
+        if (
+          data.date &&
+          data.pallet &&
+          data.checker &&
+          data.checker != "Data empty"
+        ) {
           setLoad(true);
           setDataBBFg({ data1: data });
           setLs("dataBBFg", {
@@ -65,18 +83,64 @@ function ModalBarbocFg({ closeModal }) {
       <FormInput label="Pallet">
         <CountInput qty={pallet} setQty={setPallet} cek={readySubmit} />
       </FormInput>
-      <FormInput label="Checker">
-        <textarea
-          rows={2}
-          value={data.checker}
-          onChange={(e) =>
-            setData({ ...data, checker: capitalize(e.target.value) })
-          }
-          className={
-            !readySubmit && !data.checker ? "form-input-false" : "form-input"
-          }
-        />
-      </FormInput>
+      <div className="flex gap-x-3 items-end">
+        <FormInput label="Checker" style="grow">
+          {addChecker ? (
+            <textarea
+              rows={3}
+              className={
+                addChecker &&
+                !readySubmit &&
+                (data.checker == "Data empty" || !data.checker)
+                  ? "form-input-false"
+                  : "form-input"
+              }
+              value={data.checker}
+              onChange={(e) => setData({ ...data, checker: e.target.value })}
+            />
+          ) : (
+            <select
+              className={
+                !addChecker &&
+                !readySubmit &&
+                (data.checker == "Data empty" || !data.checker)
+                  ? "form-input-false"
+                  : "form-input"
+              }
+              onChange={(e) => setData({ ...data, checker: e.target.value })}
+            >
+              <option value="">Pilih Checker</option>
+              {checkers.length > 0 ? (
+                checkers.map((checker, i) => (
+                  <option key={i} value={checker}>
+                    {checker}
+                  </option>
+                ))
+              ) : (
+                <option>Loading ...</option>
+              )}
+            </select>
+          )}
+        </FormInput>
+        <button
+          onClick={() => setAddChecker(!addChecker)}
+          className={`group p-3 px-4 border rounded-2xl flex items-middle hover:border-blue duration-200 ${
+            addChecker ? "mb-4" : "mb-2"
+          }`}
+        >
+          {addChecker ? (
+            <FontAwesomeIcon
+              icon={faChevronUp}
+              className={` text-gray-500 group-hover:text-blue duration-200`}
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faPlus}
+              className={` text-gray-500 group-hover:text-blue duration-200`}
+            />
+          )}
+        </button>
+      </div>
     </ModalForm>
   );
 }
@@ -169,6 +233,12 @@ export default function Page() {
     updateLocalstorage(
       "checkerRpk",
       () => useFetchBarboc("getCheckerRpk"),
+      () => setLoadFt("update checker"),
+      () => setLoadFt(false)
+    );
+    updateLocalstorage(
+      "checkerFg",
+      () => useFetchBarboc("getCheckerFg"),
       () => setLoadFt("update checker"),
       () => setLoadFt(false)
     );

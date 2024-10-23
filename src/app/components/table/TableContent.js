@@ -164,7 +164,7 @@ export function TableContent({ dataContent, setDataContent }) {
                 <Table.Cell className="pr-0">{item[3]}</Table.Cell>
                 <Table.Cell className="pl-0">
                   <a
-                    className="font-medium text-blue hover:underline "
+                    className="font-medium text-blue hover:underline cursor-pointer"
                     onClick={() => [
                       setOpenEdit(true),
                       setEditData([index, ...item]),
