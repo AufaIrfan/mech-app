@@ -14,19 +14,15 @@ import CardInputCanvas from "../../../../components/card/CardPlantCanvas";
 import BtnSubmit from "../../../../components/button/BtnSubmit";
 import formatDate from "../../../../hooks/fortmatDate";
 import removeLocalstorage from "../../../../hooks/removeLocalstorage";
-import getLocalstorage from "../../../../hooks/getLocalstorage";
+import getLs from "../../../../hooks/getLs";
 import { useFetchMatDbase } from "../../../../Api/useFetch";
-import setLocalstorage from "../../../../hooks/setLocalstorage";
+import setLs from "../../../../hooks/setLs";
 
 export default function Page() {
   const router = useRouter();
   const { setGlobalFalse, dataBBFg } = useContext(GlobalContext);
-  const [dbase1015, setDbase1015] = useState(
-    getLocalstorage("dBase1015") || false
-  );
-  const [dbase1016, setDbase1016] = useState(
-    getLocalstorage("dBase1016") || false
-  );
+  const [dbase1015, setDbase1015] = useState(getLs("dBase1015") || false);
+  const [dbase1016, setDbase1016] = useState(getLs("dBase1016") || false);
   const [details, setDetails] = useState(false);
   const [simpanConfirm, setSimpanConfirm] = useState(false);
   const [batalConfirm, setBatalConfirm] = useState(false);
@@ -38,14 +34,10 @@ export default function Page() {
   });
 
   const [storeData1015, setStoreData1015] = useState(
-    (getLocalstorage("dataBBFg") &&
-      getLocalstorage("dataBBFg").data2.storeData1015) ||
-      []
+    (getLs("dataBBFg") && getLs("dataBBFg").data2.storeData1015) || []
   );
   const [storeData1016, setStoreData1016] = useState(
-    (getLocalstorage("dataBBFg") &&
-      getLocalstorage("dataBBFg").data2.storeData1016) ||
-      []
+    (getLs("dataBBFg") && getLs("dataBBFg").data2.storeData1016) || []
   );
 
   useEffect(() => {
@@ -67,7 +59,7 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    setLocalstorage("dataBBFg", {
+    setLs("dataBBFg", {
       ...dataBBFg,
       data2: {
         storeData1015,
@@ -81,11 +73,11 @@ export default function Page() {
       const fetch1015 = await useFetchMatDbase("get1015");
       const fetch1016 = await useFetchMatDbase("get1016");
       if (!dbase1015) setDbase1015(fetch1015);
-      setLocalstorage("dBase1015", fetch1015);
+      setLs("dBase1015", fetch1015);
       if (!dbase1015) setDbase1015(fetch1015);
-      setLocalstorage("dBase1015", fetch1015);
+      setLs("dBase1015", fetch1015);
       if (!dbase1016) setDbase1016(fetch1016);
-      setLocalstorage("dBase1016", fetch1016);
+      setLs("dBase1016", fetch1016);
     }
   }
 
@@ -148,14 +140,14 @@ export default function Page() {
           <div className="flex flex-col gap-4">
             <Alert text={"Diisi oleh checker finish good"} style={"mb-2"} />
             <CardInputCanvas
-              plant="1015"
-              data={dbase1015}
+              plant={1015}
+              dbase={dbase1015}
               storedData={storeData1015}
               setStoredData={setStoreData1015}
             />
             <CardInputCanvas
-              plant="1016"
-              data={dbase1016}
+              plant={1016}
+              dbase={dbase1016}
               storedData={storeData1016}
               setStoredData={setStoreData1016}
             />

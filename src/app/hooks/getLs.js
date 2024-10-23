@@ -1,7 +1,7 @@
-export default function setLocalstorage(key, value) {
+export default function getLs(key) {
   try {
     if (typeof localStorage !== "undefined") {
-      localStorage.setItem(key, JSON.stringify(value));
+      return JSON.parse(localStorage.getItem(key));
     }
   } catch (error) {
     console.log(error.message);

@@ -11,9 +11,9 @@ import ModalForm from "../../components/modal/ModalForm";
 import { useRouter } from "next/navigation";
 import CountInput from "../../components/form/CountInput";
 import capitalize from "../../hooks/capitalize";
-import setLocalstorage from "../../hooks/setLocalstorage";
+import setLs from "../../hooks/setLs";
 import { useFetchBarboc, useFetchMatDbase } from "../../Api/useFetch";
-import getLocalstorage from "../../hooks/getLocalstorage";
+import getLs from "../../hooks/getLs";
 import LoadFooter from "../../components/load/loadFooter";
 import updateLocalstorage from "../../hooks/updateLocalstorage";
 
@@ -40,7 +40,7 @@ function ModalBarbocFg({ closeModal }) {
         if (data.date && data.pallet && data.checker) {
           setLoad(true);
           setDataBBFg({ data1: data });
-          setLocalstorage("dataBBFg", {
+          setLs("dataBBFg", {
             data1: data,
             data2: { storeData1015: [], storeData1016: [] },
           });
@@ -84,9 +84,7 @@ function ModalBarbocRpk({ closeModal }) {
   const router = useRouter();
   const { setLoad, dataBBRpk, setDataBBRpk } = useContext(GlobalContext);
   const [readySubmit, setReadySubmit] = useState(true);
-  const [checkers, setCheckers] = useState(
-    getLocalstorage("checkerRpk") || false
-  );
+  const [checkers, setCheckers] = useState(getLs("checkerRpk") || false);
   const [pallet, setPallet] = useState(0);
   const [data, setData] = useState({
     date: new Date().toISOString().split("T")[0],
@@ -100,7 +98,7 @@ function ModalBarbocRpk({ closeModal }) {
       updateLocalstorage(
         "checkerRpk",
         () => useFetchBarboc("getCheckerRpk"),
-        () => setCheckers(getLocalstorage("checkerRpk"))
+        () => setCheckers(getLs("checkerRpk"))
       );
     }
   }, []);
@@ -116,7 +114,7 @@ function ModalBarbocRpk({ closeModal }) {
         if (data.date && data.pallet && data.checker) {
           setLoad(true);
           setDataBBRpk({ ...dataBBRpk, data1: data });
-          setLocalstorage("dataBBRpk", { ...dataBBRpk, data1: data });
+          setLs("dataBBRpk", { ...dataBBRpk, data1: data });
           router.push("/pages/barang-bocor/input/bb-rpk");
         } else {
           setReadySubmit(false);

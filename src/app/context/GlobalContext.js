@@ -1,16 +1,14 @@
 "use client";
 import React, { createContext, useState, useEffect } from "react";
-import getLocalstorage from "../hooks/getLocalstorage";
+import getLs from "../hooks/getLs";
 
 export const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
   const [load, setLoad] = useState(false);
   const [loadFt, setLoadFt] = useState(false);
-  const [dataBBFg, setDataBBFg] = useState(getLocalstorage("dataBBFg") || {});
-  const [dataBBRpk, setDataBBRpk] = useState(
-    getLocalstorage("dataBBRpk") || {}
-  );
+  const [dataBBFg, setDataBBFg] = useState(getLs("dataBBFg") || {});
+  const [dataBBRpk, setDataBBRpk] = useState(getLs("dataBBRpk") || {});
   const setGlobalFalse = () => {
     setLoad(false);
   };

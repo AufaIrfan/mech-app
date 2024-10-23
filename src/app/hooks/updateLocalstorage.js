@@ -1,4 +1,4 @@
-import setLocalstorage from "./setLocalstorage";
+import setLs from "./setLs";
 export default async function updateLocalstorage(
   key,
   fetch,
@@ -9,7 +9,7 @@ export default async function updateLocalstorage(
   startLoad();
   let data = false;
   data = await fetch();
-  setLocalstorage(key, data);
+  setLs(key, data);
   callback();
   endLoad();
 }

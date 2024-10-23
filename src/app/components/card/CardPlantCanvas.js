@@ -18,21 +18,19 @@ import CheckboxInput from "../form/CheckboxInput";
 import MidInput from "../form/MidInput";
 import { GlobalContext } from "../../context/GlobalContext";
 import CountInput from "../form/CountInput";
-import getLocalstorage from "../../hooks/getLocalstorage";
-import setLocalstorage from "../../hooks/setLocalstorage";
+import getLs from "../../hooks/getLs";
+import setLs from "../../hooks/setLs";
 import { useFetchBarboc } from "../../Api/useFetch";
 
 export default function CardInputCanvas({
   plant,
-  data,
+  dbase,
   storedData,
   setStoredData,
 }) {
   const { setGlobalFalse } = useContext(GlobalContext);
   const [dataset, setDataset] = useState(false);
-  const [damageType, setDamageType] = useState(
-    getLocalstorage("damageType") || false
-  );
+  const [damageType, setDamageType] = useState(getLs("damageType") || false);
   const [onInput, setOnInput] = useState(false);
   const [readySubmit, setReadySubmit] = useState(true);
   const [addNote, setAddNote] = useState(false);
@@ -51,12 +49,12 @@ export default function CardInputCanvas({
     if (!damageType) {
       const fetchDamage = await useFetchBarboc("getDamageType");
       setDamageType(fetchDamage);
-      setLocalstorage("damageType", fetchDamage);
+      setLs("damageType", fetchDamage);
     }
   }
 
   function cekMid(e) {
-    let mid = data.find((item) => item[1] == e);
+    let mid = dbase.find((item) => item[1] == e);
     if (mid) {
       setDesc(mid[2]);
       setNeedMaintain(false);
@@ -82,7 +80,7 @@ export default function CardInputCanvas({
   }
 
   useEffect(() => {
-    setDataset(data);
+    setDataset(dbase);
     setDamage(damageType[0]);
     cekLs();
     if (storedData.length > 0) {
@@ -134,7 +132,7 @@ export default function CardInputCanvas({
               } else {
                 setAlertMaintain(true);
                 setReadySubmit(false);
-                console.log("mid baru has ben checked");
+                console.log("mid baru must be checked");
               }
             } else {
               setReadySubmit(false);
@@ -276,9 +274,12 @@ export default function CardInputCanvas({
         <p className=""> {plant == "Retur" ? "Retur" : "Plant " + plant}</p>
       </div>
 
-      {data && onInput && (
+      {dbase && onInput && (
         <div className="flex flex-col gap-3 p-4 rounded-b-2xl bg-white border border-blue/60  duration-200">
-          <TableContent data={storedData} setData={setStoredData} />
+          <TableContent
+            dataContent={storedData}
+            setDataContent={setStoredData}
+          />
           <div className="botton-action flex flex-row justify-center w-full gap-2 mx-auto">
             <button
               onClick={() => setDeleteData(true)}
