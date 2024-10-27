@@ -67,11 +67,11 @@ function ModalBarbocFg({ closeModal }) {
             usePostBarboc("postCheckerFg", [data.checker]);
           }
           async function cekInputedBarboc() {
-            setLoad([true, "Checking data pallet"]);
+            closeModal();
+            setLoad([true, "Checking data"]);
             const res = await usePostBarboc("postOninputFg", [
               data.date + "-" + data.pallet,
             ]);
-            console.log(res);
             if (res.result == "data already exists") {
               setLoad([false]);
               setAlertOption([
@@ -79,6 +79,7 @@ function ModalBarbocFg({ closeModal }) {
                 "Pallet " + data.pallet + " sudah diinput",
               ]);
             } else if (res.result == "success") {
+              setLoad([true, "Success"]);
               router.push("/pages/barang-bocor/input/bb-fg");
             } else {
               router.push("/pages/barang-bocor");

@@ -15,12 +15,13 @@ import BtnSubmit from "../../../../components/button/BtnSubmit";
 import formatDate from "../../../../hooks/fortmatDate";
 import removeLocalstorage from "../../../../hooks/removeLocalstorage";
 import getLs from "../../../../hooks/getLs";
-import { useFetchMatDbase } from "../../../../Api/useFetch";
+import { useFetchMatDbase, usePostBarboc } from "../../../../Api/useFetch";
 import setLs from "../../../../hooks/setLs";
 
 export default function Page() {
   const router = useRouter();
-  const { setGlobalFalse, dataBBFg } = useContext(GlobalContext);
+  const { setGlobalFalse, dataBBFg, setLoad, setNotif } =
+    useContext(GlobalContext);
   const [dbase1015, setDbase1015] = useState(getLs("dBase1015") || false);
   const [dbase1016, setDbase1016] = useState(getLs("dBase1016") || false);
   const [details, setDetails] = useState(false);
@@ -84,8 +85,6 @@ export default function Page() {
   const closeModal = () => {
     setSimpanConfirm(false);
     setBatalConfirm(false);
-    setDel1015Confirm(false);
-    setDel1016Confirm(false);
   };
 
   return (
@@ -95,7 +94,44 @@ export default function Page() {
           title="Simpan Data ?"
           yeslabel="Simpan"
           color="blue"
-          yesAction={() => {}}
+          yesAction={async () => {
+            //   [
+            //     0  1015,
+            //     1  60986,
+            //     2  "SOKLIN LIQUID DET VIOLET PCH 100ML",
+            //     3  1,
+            //     4  "Kardus Rusak",
+            //     5  "",
+            //     6  false
+            // ]
+            if (storeData1015.length > 0) {
+              setLoad([true]);
+              setSimpanConfirm(false);
+              let sendData = [];
+              storeData1015.map((item) => {
+                sendData.push([
+                  dataDisplay.date,
+                  item[1],
+                  item[2],
+                  item[3],
+                  item[4],
+                  dataDisplay.pallet,
+                  item[0],
+                  dataDisplay.checker,
+                  dataDisplay.time,
+                  "21:40",
+                ]);
+              });
+              await usePostBarboc("postInputedDataFg", sendData);
+              console.log(storeData1015);
+              setNotif({
+                show: true,
+                type: "success",
+                text: "Data berhasil disimpan",
+              });
+              router.push("/pages/barang-bocor");
+            }
+          }}
           noAction={() => {
             closeModal();
           }}
@@ -106,7 +142,12 @@ export default function Page() {
           title="Data akan dihapus, tetap keluar?"
           yeslabel="Keluar"
           color="red"
-          yesAction={() => {
+          yesAction={async () => {
+            closeModal();
+            setLoad([true]);
+            await usePostBarboc("deleteOninputFg", [
+              dataBBFg.data1.date + "-" + dataBBFg.data1.pallet,
+            ]);
             removeLocalstorage("dataBBFg");
             router.push("/pages/barang-bocor");
           }}

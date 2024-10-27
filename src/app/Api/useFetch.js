@@ -1,6 +1,6 @@
 const scriptId = {
   barboc:
-    "AKfycbz9D-RkcI0rZd0N_NAlB66iD0l2QylKChq5i6WZhJBq8S6_RLkauqN662QZt-GYHScL",
+    "AKfycbyfYyWg4XDTu9btxU7ooVA55m3YW6WJhksNkl0uX3thrKgkNhPdPEYgznnBf9nxvVQH",
   matDbase:
     "AKfycbwnsLv1yOGDNZe6zxcmgZSHrj4m4rOQu_ElCvZrXGAI_OTDjzfcxBY6UVdx7OWJGpFlPA",
 };
@@ -38,6 +38,7 @@ export const usePostBarboc = async (param, data) => {
       body: formData,
     });
     const response = await res.json();
+    console.log(param, response);
     return response;
   } catch (error) {
     console.log(error);
