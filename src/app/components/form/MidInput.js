@@ -27,6 +27,7 @@ export default function MidInput({
           cekmid(e.target.value);
         }}
         {...(disable && { disabled: true })}
+        autoFocus
       />
       <datalist id="mid">
         {dataset &&

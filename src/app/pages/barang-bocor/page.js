@@ -1,16 +1,6 @@
 "use client";
 
-import {
-  faAdd,
-  faAddressCard,
-  faChevronDown,
-  faChevronUp,
-  faMinus,
-  faPlugCirclePlus,
-  faPlus,
-  faPlusCircle,
-  faSoap,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronUp, faPlus, faSoap } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
 import BtnHome from "../../components/button/BtnHome";
@@ -20,18 +10,26 @@ import FormInput from "../../components/form/FormInput";
 import ModalForm from "../../components/modal/ModalForm";
 import { useRouter } from "next/navigation";
 import CountInput from "../../components/form/CountInput";
-import capitalize from "../../hooks/capitalize";
 import setLs from "../../hooks/setLs";
-import { useFetchBarboc, useFetchMatDbase } from "../../Api/useFetch";
+import {
+  useFetchBarboc,
+  useFetchMatDbase,
+  usePostBarboc,
+} from "../../Api/useFetch";
 import getLs from "../../hooks/getLs";
 import LoadFooter from "../../components/load/loadFooter";
 import updateLocalstorage from "../../hooks/updateLocalstorage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import capitalize from "../../hooks/capitalize";
 
 function ModalBarbocFg({ closeModal }) {
   const router = useRouter();
-  const { setLoad, dataBBFg, setDataBBFg } = useContext(GlobalContext);
-  const [checkers, setCheckers] = useState(getLs("checkerFg") || false);
+  const checkers = getLs("checkerFg") || false;
+  const [AlertOption, setAlertOption] = useState([
+    "blue",
+    "Diisi oleh checker finish good",
+  ]);
+  const { setLoad, setDataBBFg } = useContext(GlobalContext);
   const [addChecker, setAddChecker] = useState(false);
   const [readySubmit, setReadySubmit] = useState(true);
   const [pallet, setPallet] = useState(0);
@@ -56,20 +54,44 @@ function ModalBarbocFg({ closeModal }) {
           data.checker &&
           data.checker != "Data empty"
         ) {
-          setLoad(true);
           setDataBBFg({ data1: data });
           setLs("dataBBFg", {
             data1: data,
             data2: { storeData1015: [], storeData1016: [] },
           });
-          router.push("/pages/barang-bocor/input/bb-fg");
+          addChecker && addCheckerBarboc();
+          cekInputedBarboc();
+          //----------------------------------------------------------
+          function addCheckerBarboc() {
+            setLoad([true, "Add checker"]);
+            usePostBarboc("postCheckerFg", [data.checker]);
+          }
+          async function cekInputedBarboc() {
+            setLoad([true, "Checking data pallet"]);
+            const res = await usePostBarboc("postOninputFg", [
+              data.date + "-" + data.pallet,
+            ]);
+            console.log(res);
+            if (res.result == "data already exists") {
+              setLoad([false]);
+              setAlertOption([
+                "red",
+                "Pallet " + data.pallet + " sudah diinput",
+              ]);
+            } else if (res.result == "success") {
+              router.push("/pages/barang-bocor/input/bb-fg");
+            } else {
+              router.push("/pages/barang-bocor");
+              setLoad([false]);
+            }
+          }
         } else {
           setReadySubmit(false);
         }
       }}
       closeAct={closeModal}
     >
-      <Alert text="Diisi oleh checker finish good" style="mb-2" />
+      <Alert type={AlertOption[0]} text={AlertOption[1]} style="mb-2" />
       <FormInput label="Tanggal">
         <input
           type="date"
@@ -96,7 +118,9 @@ function ModalBarbocFg({ closeModal }) {
                   : "form-input"
               }
               value={data.checker}
-              onChange={(e) => setData({ ...data, checker: e.target.value })}
+              onChange={(e) =>
+                setData({ ...data, checker: capitalize(e.target.value) })
+              }
             />
           ) : (
             <select
@@ -123,7 +147,9 @@ function ModalBarbocFg({ closeModal }) {
           )}
         </FormInput>
         <button
-          onClick={() => setAddChecker(!addChecker)}
+          onClick={() => {
+            setAddChecker(!addChecker), setData({ ...data, checker: "" });
+          }}
           className={`group p-3 px-4 border rounded-2xl flex items-middle hover:border-blue duration-200 ${
             addChecker ? "mb-4" : "mb-2"
           }`}
@@ -176,7 +202,7 @@ function ModalBarbocRpk({ closeModal }) {
       title="Barang Bocor Repack"
       submitAct={() => {
         if (data.date && data.pallet && data.checker) {
-          setLoad(true);
+          setLoad([true]);
           setDataBBRpk({ ...dataBBRpk, data1: data });
           setLs("dataBBRpk", { ...dataBBRpk, data1: data });
           router.push("/pages/barang-bocor/input/bb-rpk");

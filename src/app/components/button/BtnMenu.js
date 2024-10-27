@@ -3,14 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useContext } from "react";
 import { GlobalContext } from "../../context/GlobalContext";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 const BtnMenu = ({ icon, title, to, notif = 0, onClick = () => {} }) => {
   const { setLoad } = useContext(GlobalContext);
   return (
     <Link
       href={to}
       onClick={() => {
-        setLoad(true);
+        setLoad([true]);
         onClick();
       }}
       className="relative group menu-item col-auto rounded-3xl p-5 bg-white hover:bg-blue duration-200"
