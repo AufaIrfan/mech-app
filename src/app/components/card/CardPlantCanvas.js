@@ -40,6 +40,7 @@ export default function CardInputCanvas({
   const [mid, setMid] = useState(false);
   const [desc, setDesc] = useState(false);
   const [qty, setQty] = useState(0);
+  const [uom, setUom] = useState("Box");
   const [damage, setDamage] = useState(false);
   const [note, setNote] = useState("");
   const [needMaintain, setNeedMaintain] = useState(false);
@@ -72,6 +73,7 @@ export default function CardInputCanvas({
     setMid(false);
     setDesc(false);
     setQty(0);
+    setUom("Box");
     setDamage(damageType[0]);
     setNote("");
     setNeedMaintain(false);
@@ -119,13 +121,31 @@ export default function CardInputCanvas({
               if (!needMaintain && !maintainDesc) {
                 setStoredData([
                   ...storedData,
-                  [plant, Number(mid), desc, qty, damage, note, maintainDesc],
+                  [
+                    plant,
+                    Number(mid),
+                    desc,
+                    qty,
+                    uom,
+                    damage,
+                    note,
+                    maintainDesc,
+                  ],
                 ]);
                 closeModal();
               } else if (needMaintain && maintainDesc) {
                 setStoredData([
                   ...storedData,
-                  [plant, Number(mid), desc, qty, damage, note, maintainDesc],
+                  [
+                    plant,
+                    Number(mid),
+                    desc,
+                    qty,
+                    uom,
+                    damage,
+                    note,
+                    maintainDesc,
+                  ],
                 ]);
                 closeModal();
                 console.log("need maintain");
@@ -139,30 +159,44 @@ export default function CardInputCanvas({
             }
           }}
         >
-          <FormInput label="MID">
-            <div className="flex gap-3 items-center relative">
-              <MidInput
-                data={dataset}
-                onchange={setMid}
-                cekmid={cekMid}
-                readysubmit={readySubmit}
-              />
-              {!needMaintain ? (
-                <FontAwesomeIcon
-                  icon={faCircleCheck}
-                  className="text-green-500 text-xl px-2 py-2 lg:px-4 absolute right-2 bg-white rounded-2xl"
-                />
-              ) : (
-                <button
-                  className="absolute right-2 px-2 pb-0 pt-1 lg:px-4 bg-white rounded-2xl"
-                  onClick={() => setAlertMaintain(!alertMaintain)}
-                >
-                  <FontAwesomeIcon
-                    icon={faExclamationCircle}
-                    className="text-red-500 text-xl"
+          <div className="items-center">
+            <div className="flex gap-3 items-center">
+              <FormInput label="MID" style="grow">
+                <div className="flex gap-3 items-center relative">
+                  <MidInput
+                    data={dataset}
+                    onchange={setMid}
+                    cekmid={cekMid}
+                    readysubmit={readySubmit}
                   />
-                </button>
-              )}
+                  {!needMaintain ? (
+                    <FontAwesomeIcon
+                      icon={faCircleCheck}
+                      className="text-green-500 text-xl px-2 py-2 lg:px-4 absolute right-2 bg-white rounded-2xl"
+                    />
+                  ) : (
+                    <button
+                      className="absolute right-2 px-2 pb-0 pt-1 lg:px-4 bg-white rounded-2xl"
+                      onClick={() => setAlertMaintain(!alertMaintain)}
+                    >
+                      <FontAwesomeIcon
+                        icon={faExclamationCircle}
+                        className="text-red-500 text-xl"
+                      />
+                    </button>
+                  )}
+                </div>
+              </FormInput>
+              <FormInput label="Uom">
+                <select
+                  className="form-input min-w-[6em]"
+                  value={uom}
+                  onChange={(e) => setUom(e.target.value)}
+                >
+                  <option value="Box">Box</option>
+                  <option value="Pcs">Pcs</option>
+                </select>
+              </FormInput>
             </div>
             {needMaintain && alertMaintain && (
               <div className="flex gap-x-4 gap-y-3 pt-4 pb-2 lg:items-center items-start  lg:flex-row flex-col">
@@ -188,7 +222,7 @@ export default function CardInputCanvas({
                 </div>
               </div>
             )}
-          </FormInput>
+          </div>
           <FormInput label="Deskripsi">
             <input
               type="text"

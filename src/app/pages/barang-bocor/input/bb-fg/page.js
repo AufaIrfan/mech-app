@@ -17,6 +17,8 @@ import removeLocalstorage from "../../../../hooks/removeLocalstorage";
 import getLs from "../../../../hooks/getLs";
 import { useFetchMatDbase, usePostBarboc } from "../../../../Api/useFetch";
 import setLs from "../../../../hooks/setLs";
+import mergeMid from "../../../../hooks/mergeMid";
+import formatDataBB from "../../../../hooks/formatDataBB";
 
 export default function Page() {
   const router = useRouter();
@@ -95,35 +97,21 @@ export default function Page() {
           yeslabel="Simpan"
           color="blue"
           yesAction={async () => {
-            //   [
-            //     0  1015,
-            //     1  60986,
-            //     2  "SOKLIN LIQUID DET VIOLET PCH 100ML",
-            //     3  1,
-            //     4  "Kardus Rusak",
-            //     5  "",
-            //     6  false
-            // ]
-            if (storeData1015.length > 0) {
+            let lsStoreD = getLs("dataBBFg");
+            if (lsStoreD.data2.storeData1015.length > 0) {
               setLoad([true]);
+              let merge1015 = mergeMid(lsStoreD.data2.storeData1015);
+              let format1015 = formatDataBB(
+                lsStoreD.data1,
+                merge1015,
+                new Date()
+              );
               setSimpanConfirm(false);
-              let sendData = [];
-              storeData1015.map((item) => {
-                sendData.push([
-                  dataDisplay.date,
-                  item[1],
-                  item[2],
-                  item[3],
-                  item[4],
-                  dataDisplay.pallet,
-                  item[0],
-                  dataDisplay.checker,
-                  dataDisplay.time,
-                  "21:40",
-                ]);
-              });
-              await usePostBarboc("postInputedDataFg", sendData);
-              console.log(storeData1015);
+              await usePostBarboc("postInputedDataFg", format1015);
+              await usePostBarboc("deleteOninputFg", [
+                lsStoreD.data1.date + "-" + lsStoreD.data1.pallet,
+              ]);
+              // removeLocalstorage("dataBBFg");
               setNotif({
                 show: true,
                 type: "success",
@@ -195,7 +183,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="fixed w-full flex flex-row gap-4 mt-2 bottom-0 bg-white container mx-auto lg:max-w-[60vw] p-6 lg:px-12 ">
+      <div className="fixed w-full flex flex-row gap-4 mt-2 bottom-0 bg-white container mx-auto xl:max-w-[60vw] p-6 xl:px-12 ">
         <BtnSubmit
           title=""
           spinAct={false}

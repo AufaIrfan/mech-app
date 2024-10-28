@@ -13,8 +13,10 @@ export const useFetchBarboc = async (param) => {
   try {
     const res = await fetch(url(scriptId.barboc) + "?p=" + param);
     const data = await res.json();
+    console.log(param, "success");
     return data;
   } catch (error) {
+    console.log(param, error.message);
     return [error.message];
   }
 };
@@ -23,8 +25,10 @@ export const useFetchMatDbase = async (param) => {
   try {
     const res = await fetch(url(scriptId.matDbase) + "?p=" + param);
     const data = await res.json();
+    console.log(param, "success");
     return data;
   } catch (error) {
+    console.log(param, error.message);
     return [error.message];
   }
 };

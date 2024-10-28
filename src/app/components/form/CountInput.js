@@ -2,9 +2,9 @@
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function CountInput({ qty, setQty, cek }) {
+export default function CountInput({ qty, setQty, cek, style }) {
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className={"grid grid-cols-4 gap-4 " + style}>
       <button
         onClick={() => setQty(Number(qty) - 1)}
         className="font-bold btn-submit btn-submit-blue-outline"

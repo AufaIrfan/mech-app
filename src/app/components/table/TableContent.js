@@ -6,7 +6,13 @@ import ModalForm from "../modal/ModalForm";
 import FormInput from "../form/FormInput";
 import getLs from "../../hooks/getLs";
 import CountInput from "../form/CountInput";
-import { faNoteSticky, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faNoteSticky,
+  faPenAlt,
+  faPenFancy,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export function TableContent({ dataContent, setDataContent }) {
@@ -50,20 +56,37 @@ export function TableContent({ dataContent, setDataContent }) {
                       (item[4] = editData[5]),
                       (item[5] = editData[6]),
                       (item[6] = editData[7]),
+                      (item[7] = editData[8]),
                     ]
                   : item
               )
             ),
           ]}
         >
-          <FormInput label="MID">
-            <input
-              type="number"
-              className="form-input"
-              value={editData[2]}
-              disabled
-            />
-          </FormInput>
+          <div className="flex gap-3 items-center">
+            <FormInput label="MID">
+              <input
+                type="number"
+                className="form-input"
+                value={editData[2]}
+                disabled
+              />
+            </FormInput>
+            <FormInput label="Uom">
+              <select
+                className="form-input min-w-[6em]"
+                value={editData[5]}
+                onChange={(e) => {
+                  editData[5] = e.target.value;
+                  setEditData({ ...editData });
+                }}
+              >
+                <option value="Box">Box</option>
+                <option value="Pcs">Pcs</option>
+              </select>
+            </FormInput>
+          </div>
+
           <FormInput label="Deskripsi">
             <input
               type="text"
@@ -73,7 +96,7 @@ export function TableContent({ dataContent, setDataContent }) {
                 editData[3] = e.target.value;
                 setEditData({ ...editData });
               }}
-              {...(!editData[7] && { disabled: true })}
+              {...(!editData[8] && { disabled: true })}
             />
           </FormInput>
           <FormInput label="Qty">
@@ -84,10 +107,10 @@ export function TableContent({ dataContent, setDataContent }) {
               <select
                 className="form-input"
                 onChange={(e) => {
-                  editData[5] = e.target.value;
+                  editData[7] = e.target.value;
                   setEditData({ ...editData });
                 }}
-                value={editData[5]}
+                value={editData[7]}
               >
                 {damageType ? (
                   damageType.map((item, index) => (
@@ -108,12 +131,12 @@ export function TableContent({ dataContent, setDataContent }) {
               <FontAwesomeIcon
                 icon={faNoteSticky}
                 className={`text-xl group-hover:text-blue duration-200 ${
-                  editData[6] != "" || addNote ? "text-blue " : "text-gray-500"
+                  editData[7] != "" || addNote ? "text-blue " : "text-gray-500"
                 }`}
               />
               <p
                 className={
-                  editData[6] != "" || addNote
+                  editData[7] != "" || addNote
                     ? "text-blue"
                     : "text-gray-500 group-hover:text-blue duration-200"
                 }
@@ -142,10 +165,13 @@ export function TableContent({ dataContent, setDataContent }) {
       <div className="overflow-x-auto">
         <Table striped>
           <Table.Head>
-            <Table.HeadCell>MID</Table.HeadCell>
-            <Table.HeadCell>Desc</Table.HeadCell>
-            <Table.HeadCell>Qty</Table.HeadCell>
-            <Table.HeadCell>
+            <Table.HeadCell className="px-2 lg:px-[2em]">MID</Table.HeadCell>
+            <Table.HeadCell className="px-2 lg:px-[2em]  w-full">
+              Desc
+            </Table.HeadCell>
+            <Table.HeadCell className="px-2 lg:px-[2em]">Qty</Table.HeadCell>
+            <Table.HeadCell className="px-2 lg:px-[2em]">Uom</Table.HeadCell>
+            <Table.HeadCell className="px-3 lg:px-[2em]">
               <span className="sr-only">Edit</span>
             </Table.HeadCell>
           </Table.Head>
@@ -155,14 +181,19 @@ export function TableContent({ dataContent, setDataContent }) {
                 key={index}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
-                <Table.Cell className="pr-0 font-medium text-gray-900 dark:text-white">
+                <Table.Cell className="font-medium text-gray-900 dark:text-white px-2 lg:px-[2em]">
                   {item[1]}
                 </Table.Cell>
-                <Table.Cell className="truncate overflow-hidden max-w-[25vw] pr-0">
+                <Table.Cell className="truncate overflow-hidden max-w-[25vw] px-2 lg:px-[2em]">
                   {item[2]}
                 </Table.Cell>
-                <Table.Cell className="pr-0">{item[3]}</Table.Cell>
-                <Table.Cell className="pl-0">
+                <Table.Cell className="truncate overflow-hidden px-2 lg:px-[2em]">
+                  {item[3]}
+                </Table.Cell>
+                <Table.Cell className="truncate overflow-hidden px-2 lg:px-[2em]">
+                  {item[4]}
+                </Table.Cell>
+                <Table.Cell className="px-3 lg:px-[2em]">
                   <a
                     className="font-medium text-blue hover:underline cursor-pointer"
                     onClick={() => [
