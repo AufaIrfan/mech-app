@@ -17,7 +17,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Reapack App",
+  title: "Mech App",
   description: "Warehouse stock management",
 };
 

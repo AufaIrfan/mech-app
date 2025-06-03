@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  faBoxesStacked,
   faBoxOpen,
   faChartSimple,
+  faClockRotateLeft,
   faDroplet,
   faScissors,
-  faSoap,
+  faScrewdriverWrench,
   faSquarePollHorizontal,
   faTable,
   faToolbox,
@@ -27,18 +27,18 @@ export default function Home() {
         <h3 className="text-lg font-bold mb-3">Menu</h3>
         <div className="menu-list grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
           <BtnMenu
-            icon={faSoap}
-            title="Barang Bocor"
-            to="/pages/barang-bocor"
+            icon={faScrewdriverWrench}
+            title="Repair"
+            to="/pages/repair/input/create-repair"
           />
           <BtnMenu
-            icon={faBoxesStacked}
-            title="Hasil Repack"
+            icon={faClockRotateLeft}
+            title="History"
             to="/pages/hasil-repack"
           />
-          <BtnMenu icon={faScissors} title="Scrapp" to="/pages/scrapp" />
+          {/* <BtnMenu icon={faScissors} title="Scrapp" to="/pages/scrapp" />
           <BtnMenu icon={faBoxOpen} title="Packaging" to="/pages/packaging" />
-          <BtnMenu icon={faDroplet} title="SFG" to="/pages/sfg" />
+          <BtnMenu icon={faDroplet} title="SFG" to="/pages/sfg" /> */}
           <BtnMenu
             icon={faSquarePollHorizontal}
             title="Stock Control"
@@ -46,7 +46,7 @@ export default function Home() {
           />
           <BtnMenu
             icon={faViruses}
-            title="Data Quality"
+            title="Report"
             to="/pages/data-quality"
           />
           <BtnMenu icon={faTable} title="Sheets" to="/pages/sheets" />

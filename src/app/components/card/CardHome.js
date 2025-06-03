@@ -9,9 +9,9 @@ export default function CardHome() {
         className="w-[55px] lg:w-[70px] pr-2"
         priority
       />
-      <h2 className="text-white text-2xl lg:text-3xl font-bold">Repack App</h2>
+      <h2 className="text-white text-2xl lg:text-3xl font-bold">Mech App</h2>
       <p className="text-blue text-xs lg:text-sm rounded-md px-1 bg-white">
-        2.0
+        1.0
       </p>
       <p className="text-blue text-xs lg:text-sm rounded-md px-1 bg-white hidden lg:block">
         Beta
