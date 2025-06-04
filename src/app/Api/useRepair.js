@@ -1,4 +1,6 @@
 // useRepair.js
+'use server';
+
 import sql from '../lib/db';
 
 async function getRepairs() {

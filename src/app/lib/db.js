@@ -1,3 +1,5 @@
+'use server';
+
 const { drizzle } = require('drizzle-orm/node-postgres');
 const { Pool } = require('pg');
 

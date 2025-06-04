@@ -1,3 +1,68 @@
+'use client';
+
+import { faChevronUp, faPlus, faSoap } from "@fortawesome/free-solid-svg-icons";
+import { useContext,useEffect,useState } from "react";
+import { MechContext } from "@/app/context/MechContext";
+import BtnHome from "@/app/components/button/BtnHome";
+import BtnSubmenu from "@/app/components/button/BtnSubmenu";
+import Alert from "@/app/components/alert/Alert";
+import FormInput from "@/app/components/form/FormInput";
+import ModalForm from "@/app/components/modal/ModalForm";
+import { useRouter } from "next/navigation";
+import CountInput from "@/app/components/form/CountInput";
+import setLs from "@/app/hooks/setLs";
+import {
+    getRepairs
+} from "@/app/Api/useRepair";
+import getLs from "@/app/hooks/getLs";
+
+
+function ModalRepairs({ closeModal }) {
+    const router = useRouter();
+    const checkers = getLs("users") || false;
+    const [AlertOption, setAlertOption] = useState([
+        "blue",
+        "Diisi oleh mekanik"
+    ]);
+    const { setLoad, setDataRepair } = useContext(MechContext);
+    const [addUser, setAddUser] = useState(false);
+    const [readySubmit, setReadySubmit] = useState(true);
+    const [machine, setMachine] = useState(0);
+    const [data, setData] = useState({
+        date: new Date().toISOString().split("T")[0],
+        machine: "",
+        user: "",
+        time: new Date().getHours() + ":" + new Date().getMinutes(),
+    });
+
+    useEffect(() =>{
+        setData({...data, machine: machine});
+    }, [machine]);
+
+    return(
+        <ModalForm
+            title="Isi Perbaikan"
+            submitAct={()=>{
+            if(
+                data.date &&
+                data.machine &&
+                data.user &&
+                data.user != "Data empty"
+            ) {
+                setDataRepair({})
+                setDataRepair({ data1: data });
+                setLs("dataRepair", {
+                    data1: data,
+                    data2: { storeData1015: [], storeData1016: [] },
+            })}
+            addUser && addUserRepair();
+            cekInputedRepair();
+            }}
+        >
+
+        </ModalForm>
+    )
+}
 // "use client";
 
 // import { faChevronUp, faPlus, faSoap } from "@fortawesome/free-solid-svg-icons";
