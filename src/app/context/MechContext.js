@@ -1,6 +1,7 @@
 "use client";
 import React, { createContext, useEffect, useState } from "react";
 import getLs from "../hooks/getLs";
+import { createRepairs } from "../components/action/serverAction";
 
 export const MechContext = createContext();
 
@@ -34,6 +35,7 @@ export function MechProvider({ children }) {
         setLoadFt,
         notif,
         setNotif,
+        createRepairs
       }}
     >
       {children}

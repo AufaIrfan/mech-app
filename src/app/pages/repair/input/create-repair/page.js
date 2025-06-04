@@ -11,9 +11,9 @@ import ModalForm from "@/app/components/modal/ModalForm";
 import { useRouter } from "next/navigation";
 import CountInput from "@/app/components/form/CountInput";
 import setLs from "@/app/hooks/setLs";
-import {
-    getRepairs
-} from "@/app/Api/useRepair";
+// import {
+//     getRepairs
+// } from "@/app/Api/useRepair";
 import getLs from "@/app/hooks/getLs";
 
 
@@ -62,6 +62,82 @@ function ModalRepairs({ closeModal }) {
 
         </ModalForm>
     )
+}
+
+export default function Repair(){
+    const [modalRepair, setModalRepair] = useState(false);
+    const [modalUser, setModalUser] = useState(false);
+    const { setMechFalse, loadFt, setLoadFt } = useContext(MechContext);
+
+    useEffect(() => {
+        setMechFalse();
+        updateLocalstorage(
+        "userRepair",
+        () => useRepair("getRepairs"),
+        () => setLoadFt("update user"),
+        () => setLoadFt(false)
+        );
+        updateLocalstorage(
+        "userMechanic",
+        () => useStock("getStock"),
+        () => setLoadFt("update user"),
+        () => setLoadFt(false)
+        );
+        // updateLocalstorage(
+        // "damageType",
+        // () => useFetchBarboc("getDamageType"),
+        // () => setLoadFt("update damage type"),
+        // () => setLoadFt(false)
+        // );
+    //     updateLocalstorage(
+    //     "dbMechapp",
+    //     () => useFetch("mechapp"),
+    //     () => setLoadFt("update dataset"),
+    //     () => setLoadFt(false)
+    //     );
+    //     updateLocalstorage(
+    //     "dBase1016",
+    //     () => useFetchMatDbase("get1016"),
+    //     () => setLoadFt("update dataset"),
+    //     () => setLoadFt(false)
+    //     );
+    // }, []);
+
+    // const closeModal = () => {
+    //     setModalFg(false);
+    //     setModalRpk(false);
+    // };
+});
+
+    return (
+        <div className="main-container">
+        <LoadFooter text={loadFt} />
+        <BtnHome />
+        {modalRepair && <ModalRepairs closeModal={closeModal} />}
+        {modalRepair && <ModalRepairs closeModal={closeModal} />}
+        <div className="text-left w-full py-4">
+            <h2 className="text-xl font-bold mb-6">Barang Bocor</h2>
+            <BtnSubmenu
+            icon={faSoap}
+            title="Input Repair"
+            subtitle="Macro Repair"
+            onClick={() => {
+                setModalRepair(true);
+            }}
+            />
+            <BtnSubmenu
+            icon={faSoap}
+            title="Input Repair"
+            subtitle="Minor Repair"
+            onClick={() => {
+                setModalRepair(true);
+            }}
+            />
+            <BtnSubmenu icon={faSoap} title="Repair Data" />
+            <BtnSubmenu icon={faSoap} title="Validasi" />
+        </div>
+        </div>
+    );
 }
 // "use client";
 

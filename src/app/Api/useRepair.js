@@ -1,15 +1,13 @@
-// useRepair.js
 'use server';
 
 import sql from '../lib/db';
 
-async function getRepairs() {
+export async function getRepairs() {
   try {
-    const repairs = await sql`SELECT * FROM repairs`
-    console.log(repairs)
+    const repairs = await sql`SELECT * FROM repairs`;
+    return repairs; // return repairs
   } catch (err) {
-    console.error('Error querying repairs:', err)
+    console.error('Error querying repairs:', err);
+    return [];
   }
 }
-
-getRepairs()
