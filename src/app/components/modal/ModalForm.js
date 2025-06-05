@@ -16,6 +16,12 @@ export default function ModalForm({
   optionalBtnAct = () => {},
 }) {
   return (
+//     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto p-4">
+//   <div className="bg-white rounded-xl shadow-lg w-full max-w-sm max-h-[90vh] overflow-y-auto">
+//     {/* modal content here */}
+//   </div>
+// </div>
+
     <div
       className={`fixed flex items-middle z-10 top-0 left-0 w-full h-full bg-black/40 p-6`}
     >

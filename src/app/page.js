@@ -29,7 +29,7 @@ export default function Home() {
           <BtnMenu
             icon={faScrewdriverWrench}
             title="Repair"
-            to="/pages/repair/input/create-repair"
+            to="/pages/repair"
           />
           <BtnMenu
             icon={faClockRotateLeft}

@@ -21,6 +21,7 @@ import LoadFooter from "../../components/load/loadFooter";
 import updateLocalstorage from "../../hooks/updateLocalstorage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import capitalize from "../../hooks/capitalize";
+import Html5BarcodeScanner from "../../components/scan/Html5BarcodeScanner";
 
 function ModalRepair({ closeModal }) {
   const router = useRouter();
@@ -39,6 +40,7 @@ function ModalRepair({ closeModal }) {
     checker: "",
     time: new Date().getHours() + ":" + new Date().getMinutes(),
   });
+  const [scannedData, setScannedData] = useState('');
 
   useEffect(() => {
     setData({ ...data, sparepart: sparepart });
@@ -48,51 +50,59 @@ function ModalRepair({ closeModal }) {
     <ModalForm
       title="Repair Mesin"
       submitAct={() => {
-        if (
-          data.date &&
-          data.sparepart &&
-          data.checker &&
-          data.checker != "Data empty"
-        ) {
-          setDataRepair({ data1: data });
-          setLs("dataRepair", {
-            data1: data,
-            data2: { storeData1015: [], storeData1016: [] },
-          });
-          addChecker && addCheckerRepair();
-          cekInputedRepair();
-          //----------------------------------------------------------
-          function addCheckerRepair() {
-            setLoad([true, "Add checker"]);
-            usePostRepair("postCheckerRepair", [data.checker]);
-          }
-          async function cekInputedRepair() {
-            closeModal();
-            setLoad([true, "Checking data"]);
-            const res = await usePostRepair("postOninputRepair", [
-              data.date + "-" + data.sparepart,
-            ]);
-            if (res.result == "data already exists") {
-              setLoad([false]);
-              setAlertOption([
-                "red",
-                "Sparepart " + data.sparepart + " sudah diinput",
-              ]);
-            } else if (res.result == "success") {
-              setLoad([true, "Success"]);
-              router.push("/pages/repair/input/replace-spare");
-            } else {
-              router.push("/pages/repair");
-              setLoad([false]);
-            }
-          }
-        } else {
-          setReadySubmit(false);
-        }
+        // if (
+        //   data.date &&
+        //   data.sparepart &&
+        //   data.checker &&
+        //   data.checker != "Data empty"
+        // ) {
+        //   setDataRepair({ data1: data });
+        //   setLs("dataRepair", {
+        //     data1: data,
+        //     data2: { storeData1015: [], storeData1016: [] },
+        //   });
+        //   addChecker && addCheckerRepair();
+        //   cekInputedRepair();
+        //   //----------------------------------------------------------
+        //   function addCheckerRepair() {
+        //     setLoad([true, "Add checker"]);
+        //     usePostRepair("postCheckerRepair", [data.checker]);
+        //   }
+        //   async function cekInputedRepair() {
+        //     closeModal();
+        //     setLoad([true, "Checking data"]);
+        //     const res = await usePostRepair("postOninputRepair", [
+        //       data.date + "-" + data.sparepart,
+        //     ]);
+        //     if (res.result == "data already exists") {
+        //       setLoad([false]);
+        //       setAlertOption([
+        //         "red",
+        //         "Sparepart " + data.sparepart + " sudah diinput",
+        //       ]);
+        //     } else if (res.result == "success") {
+        //       setLoad([true, "Success"]);
+        //       router.push("/pages/repair/input/replace-spare");
+        //     } else {
+        //       router.push("/pages/repair");
+        //       setLoad([false]);
+        //     }
+        //   }
+        // } else {
+        //   setReadySubmit(false);
+        // }
       }}
       closeAct={closeModal}
     >
       <Alert type={AlertOption[0]} text={AlertOption[1]} style="mb-2" />
+      <div style={{ padding: 20 }}>
+        <h1>Barcode / QR Code Scanner</h1>
+        <Html5BarcodeScanner onScanSuccess={(data) => setScannedData(data)} />
+        <div style={{ marginTop: 20 }}>
+          <strong>Scanned Code:</strong>
+          <div>{scannedData || 'Waiting for scan...'}</div>
+        </div>
+      </div>
       <FormInput label="Tanggal">
         <input
           type="date"
@@ -103,8 +113,25 @@ function ModalRepair({ closeModal }) {
           }
         />
       </FormInput>
-      <FormInput label="Sparepart">
-        <CountInput qty={sparepart} setQty={setSparePart} cek={readySubmit} />
+      <FormInput label="Isi Perbaikan">
+        {/* <CountInput qty={sparepart} setQty={setSparePart} cek={readySubmit} /> */}
+        <input
+          type="text"
+          value={data.repairDesc}
+          className={
+            !readySubmit && !data.repairDesc ? "form-input-false" : "form-input"
+          }
+        />
+      </FormInput>
+      <FormInput label="Keterangan">
+        {/* <CountInput qty={sparepart} setQty={setSparePart} cek={readySubmit} /> */}
+        <input
+          type="text"
+          value={data.repairDesc}
+          className={
+            !readySubmit && !data.repairDesc ? "form-input-false" : "form-input"
+          }
+        />
       </FormInput>
       <div className="flex gap-x-3 items-end">
         <FormInput label="Checker" style="grow">
@@ -113,8 +140,8 @@ function ModalRepair({ closeModal }) {
               rows={3}
               className={
                 addChecker &&
-                !readySubmit &&
-                (data.checker == "Data empty" || !data.checker)
+                  !readySubmit &&
+                  (data.checker == "Data empty" || !data.checker)
                   ? "form-input-false"
                   : "form-input"
               }
@@ -127,8 +154,8 @@ function ModalRepair({ closeModal }) {
             <select
               className={
                 !addChecker &&
-                !readySubmit &&
-                (data.checker == "Data empty" || !data.checker)
+                  !readySubmit &&
+                  (data.checker == "Data empty" || !data.checker)
                   ? "form-input-false"
                   : "form-input"
               }
@@ -151,9 +178,8 @@ function ModalRepair({ closeModal }) {
           onClick={() => {
             setAddChecker(!addChecker), setData({ ...data, checker: "" });
           }}
-          className={`group p-3 px-4 border rounded-2xl flex items-middle hover:border-blue duration-200 ${
-            addChecker ? "mb-4" : "mb-2"
-          }`}
+          className={`group p-3 px-4 border rounded-2xl flex items-middle hover:border-blue duration-200 ${addChecker ? "mb-4" : "mb-2"
+            }`}
         >
           {addChecker ? (
             <FontAwesomeIcon

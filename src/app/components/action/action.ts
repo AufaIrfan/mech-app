@@ -2,18 +2,18 @@
 
 // import { validateCurrentUserCan } from "@/auth";
 import { revalidatePath } from "next/cache";
-// import { z } from "zod";
+import { z } from "zod";
 import {
   addCategory,
-  addDesignToListing,
-  createListing,
-  deleteListing,
+  // addRepairToListing,
+  // createRepair,
+  // deleteRepair,
   getListing,
-  removeDesignFromListing,
+  removeRepairFromListing,
   updateCategory,
   updateListing,
-} from "@/lib/listing";
-import { catchServerActionError } from "@/utils/error";
+} from "@/app/lib/getListingRepair";
+// import { catchServerActionError } from "@/utils/error";
 import map from "lodash/map";
 
 const createListingFormSchema = z.object({
@@ -39,14 +39,14 @@ export const actionCreateListing = async (
   tenantId: string,
 ) => {
   try {
-    const userId = await validateCurrentUserCan(tenantId, "listing:create");
+    const userId = await getUsers(userId, "listing:create");
     const data = createListingFormSchema.parse(
       Object.fromEntries(formData.entries()),
     );
 
-    const listing = await createListing(tenantId, {
+    const listing = await createRepair(repairId, {
       title: data.title,
-      author: userId,
+      checker: userId,
       description: data.content,
       imageUrl: data.imageUrl,
       price: data.price,
